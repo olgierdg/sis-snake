@@ -11,18 +11,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="kis.sspd.game.MainActivity"
+            android:name="game.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name="kis.sspd.game.MainMenu"
-            android:label="@string/title_activity_main_menu" >
+            android:name="game.MainMenu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="game.ModeMenu" android:label="@string/title_activity_mode_menu"></activity>
     </application>
 
 </manifest>

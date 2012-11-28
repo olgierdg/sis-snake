@@ -15,10 +15,11 @@ public final class R {
         public static final int enemy=0x7f020001;
         public static final int food=0x7f020002;
         public static final int ic_action_search=0x7f020003;
-        public static final int obstacle=0x7f020004;
-        public static final int rocket=0x7f020005;
-        public static final int space_ship_transp=0x7f020006;
-        public static final int spaceship=0x7f020007;
+        public static final int ic_launcher=0x7f020004;
+        public static final int obstacle=0x7f020005;
+        public static final int rocket=0x7f020006;
+        public static final int space_ship_transp=0x7f020007;
+        public static final int spaceship=0x7f020008;
     }
     public static final class id {
         public static final int button1=0x7f070000;

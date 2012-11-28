@@ -8,27 +8,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-public class MainMenu extends Activity{
+public class ModeMenu extends Activity{
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.activity_mode_menu);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_mode_menu, menu);
         return true;
     }
 	
-	public void newGame(View view){
-		Intent intent = new Intent(this, ModeMenu.class);
+	public void newNormalGame(View view){
+		Intent intent = new Intent(this, MainActivity.class);
 	    startActivity(intent);
 	}
 	
-	public void exit(View view){
-		moveTaskToBack(false);
+	public void backToMainMenu(View view){
+		Intent intent = new Intent(this, MainMenu.class);
+	    startActivity(intent);
 	}
-	
 }

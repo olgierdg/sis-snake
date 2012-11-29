@@ -14,4 +14,12 @@ public class SnakePiece {
 		this.xPos = s.xPos;
 		this.yPos = s.yPos;
 	}
+	
+	public int getXPos(){
+		return xPos;
+	}
+	
+	public int getYPos(){
+		return yPos;
+	}
 }

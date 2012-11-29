@@ -11,5 +11,6 @@
     <string name="normal_mode">Normal</string>
     <string name="back">Back</string>
     <string name="title_activity_mode_menu">Mode Menu</string>
+    <string name="resume">Resume</string>
 
 </resources>

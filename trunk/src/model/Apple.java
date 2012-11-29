@@ -3,6 +3,12 @@ package model;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+/**
+ * Klasa jabluszka, how sweet. Nic sie tu nie dzieje, jak w moim zyciu osobistym.
+ * 
+ * @author Olo
+ *
+ */
 public class Apple {
 
 	protected int xPos;

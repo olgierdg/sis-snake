@@ -6,6 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+/**
+ * O kurde jaki tu syf... Generalnie to jest klasa weza
+ * 
+ * @author Olo
+ *
+ */
 public class Snake {
 
 	private Rect sourceRect; // the rectangle to be drawn from the animation
@@ -25,23 +31,55 @@ public class Snake {
 	private int canvasHeight;
 	private int canvasWidth;
 	
-	protected Bitmap bitmap;
+	private Bitmap snakeHeadEastBitmap;
+	private Bitmap snakeHeadWestBitmap;
+	private Bitmap snakeHeadNorthBitmap;
+	private Bitmap snakeHeadSouthBitmap;
+	private Bitmap snakeBodyBitmap;
+	private Bitmap snakeTailEastBitmap;
+	private Bitmap snakeTailWestBitmap;
+	private Bitmap snakeTailNorthBitmap;
+	private Bitmap snakeTailSouthBitmap;
+	
 	protected int xPos;
 	protected int yPos;
 	private int mDirection = EAST;
     private int mNextDirection = EAST;
-    private static final int NORTH = 1;
-    private static final int SOUTH = 2;
-    private static final int EAST = 3;
-    private static final int WEST = 4;
+    public static final int NORTH = 1;
+    public static final int SOUTH = 2;
+    public static final int EAST = 3;
+    public static final int WEST = 4;
     
     public ArrayList<SnakePiece> snakeBody;
     
     boolean growSnake;
+    boolean dirChange;
+    int changeCount;
 
 	//public Snake(Bitmap bitmap, int xPos, int yPos, int fps, int frameCount) {
-    public Snake(Bitmap bitmap, int xPos, int yPos, int width, int height) {
-		this.bitmap = bitmap;
+    public Snake(Bitmap headEastBitmap, 
+    		Bitmap headWestBitmap, 
+    		Bitmap headNorthBitmap, 
+    		Bitmap headSouthBitmap, 
+    		Bitmap bodyBitmap, 
+    		Bitmap tailEastBitmap, 
+    		Bitmap tailWestBitmap,
+    		Bitmap tailNorthBitmap,
+    		Bitmap tailSouthBitmap,
+    		int xPos, int yPos) {
+    	
+		this.snakeHeadEastBitmap = headEastBitmap;
+		this.snakeHeadWestBitmap = headWestBitmap;
+		this.snakeHeadNorthBitmap = headNorthBitmap;
+		this.snakeHeadSouthBitmap = headSouthBitmap;
+		
+		this.snakeBodyBitmap = bodyBitmap;
+		
+		this.snakeTailEastBitmap = tailEastBitmap;
+		this.snakeTailWestBitmap = tailWestBitmap;
+		this.snakeTailNorthBitmap = tailNorthBitmap;
+		this.snakeTailSouthBitmap = tailSouthBitmap;
+		
 		this.xPos = xPos;
 		this.yPos = yPos;
 		snakeBody = new ArrayList<SnakePiece>();
@@ -49,8 +87,8 @@ public class Snake {
 		//frameNr = frameCount;
 		//spriteWidth = bitmap.getWidth() / frameCount;
 		
-		spriteWidth = bitmap.getWidth();
-		spriteHeight = bitmap.getHeight();
+		spriteWidth = snakeBodyBitmap.getWidth();
+		spriteHeight = snakeBodyBitmap.getHeight();
 		
 		//spriteWidth = 20;
 		//spriteHeight = 20;
@@ -58,23 +96,43 @@ public class Snake {
 		sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
 		//framePeriod = 1000 / fps;
 		//frameTicker = 0l;
-		this.canvasWidth = width;
-		this.canvasHeight = height;
 		this.growSnake = true;
+		//this.dirChange = false;
+		//this.changeCount = 0;
 	}
 
+
+   /**
+    * Getter dla glowy weza, uzywany glownie przy kolizjach, jesli w ogole nie tylko tam...
+    *  
+    * @return
+    */
     public SnakePiece getHead(){
     	return snakeBody.get(0);
     }
     
-	public void newSnakePiece(){
-		snakeBody.add(new SnakePiece(snakeBody.get(snakeBody.size()-1)));
+    /**
+     * Setter boola okreslajacego czy waz ma rosnac, dziala tylko dla nastepnego wywolania metoda updateSnake(), 
+     * na jej koniec jest ustawiamy na false.
+     * 
+     * @param grow bool okreslajacy czy waz ma urosnac
+     */
+	public void setGrowSnake(boolean grow){
+		this.growSnake = grow;
 	}
 	
-	public void setGrowSnake(boolean g){
-		this.growSnake = g;
-	}
-	
+	/**
+	 * Obsluga akcji jaka jest ruch paluchem po ekranie. Jak widac licze delte, jak w szkole, prawie. 
+	 * Tak sie zastanawialem jak to zrobic, no i w liceum zawsze mowili, nie wiesz co robic to policz delte, 
+	 * no i sie okazalo ze nawet dziala. Na studiach mowia zeby calke policzyc, ale to juz mnie przeroslo.
+	 * 
+	 * @param origEventX wspolrzedna X miejsca w ktorym ktos dotknal ekran paluchem
+	 * @param origEventY wspolrzedna Y miejsca w ktorym ktos dotknal ekran paluchem
+	 * @param eventX wspolrzedna X miejsca w ktorym ktos podniosl paluch z ekranu
+	 * @param eventY wspolrzedna Y miejsca w ktorym ktos podniosl paluch z ekranu
+	 * @param canvasWidth szerokosc ekranu (powiedzmy)
+	 * @param canvasHeight wysokosc ekranu (powiedzmy)
+	 */
 	public void handleActionMove(int origEventX, int origEventY, int eventX, int eventY, int canvasWidth, int canvasHeight) {
 		
 		int deltaX = eventX - origEventX;
@@ -88,16 +146,7 @@ public class Snake {
 		}
 	}
 
-	public void handleActionMove(float eventX, float eventY, int canvasWidth, int canvasHeight) {
-		if(Math.abs(eventX) > Math.abs(eventY)){
-			if(eventX < 0 && mDirection != EAST) mNextDirection = Snake.WEST;
-			if(eventX > 0 && mDirection != WEST) mNextDirection = Snake.EAST;
-		}else{
-			if(eventY < 0 && mDirection != SOUTH) mNextDirection = Snake.NORTH;
-			if(eventY > 0 && mDirection != NORTH) mNextDirection = Snake.SOUTH;
-		}
-	}
-	
+
 	public void borders(int canvasWidth) {
 		if (xPos > canvasWidth - spriteWidth) {
 			xPos = spriteWidth;
@@ -107,31 +156,62 @@ public class Snake {
 		}
 	}
 
-	// the draw method which draws the corresponding frame
+	/**
+	 * Metoda rysuje snejka na canvasie
+	 * 
+	 * @param canvas canvas na ktorym metoda rysuje snejka
+	 */
 	public void draw(Canvas canvas) {
 		for(int i = 0; i<snakeBody.size(); i++){
 			Rect destRect = new Rect(snakeBody.get(i).xPos, snakeBody.get(i).yPos, snakeBody.get(i).xPos + spriteWidth, snakeBody.get(i).yPos + spriteHeight);
-			canvas.drawBitmap(bitmap, sourceRect, destRect, null);
+			if(i == 0){
+				if(this.mDirection == EAST)
+					canvas.drawBitmap(snakeHeadEastBitmap, sourceRect, destRect, null);
+				if(this.mDirection == WEST)
+					canvas.drawBitmap(snakeHeadWestBitmap, sourceRect, destRect, null);
+				if(this.mDirection == NORTH)
+					canvas.drawBitmap(snakeHeadNorthBitmap, sourceRect, destRect, null);
+				if(this.mDirection == SOUTH)
+					canvas.drawBitmap(snakeHeadSouthBitmap, sourceRect, destRect, null);
+			}
+			else if (i == snakeBody.size()-1){
+				
+				if(snakeBody.get(snakeBody.size()-1).getXPos() == snakeBody.get(snakeBody.size()-2).getXPos())
+					if(snakeBody.get(snakeBody.size()-1).getYPos() > snakeBody.get(snakeBody.size()-2).getYPos())
+						canvas.drawBitmap(snakeTailNorthBitmap, sourceRect, destRect, null);
+					else
+						canvas.drawBitmap(snakeTailSouthBitmap, sourceRect, destRect, null);
+				
+				if(snakeBody.get(snakeBody.size()-1).getYPos() == snakeBody.get(snakeBody.size()-2).getYPos())
+					if(snakeBody.get(snakeBody.size()-1).getXPos() > snakeBody.get(snakeBody.size()-2).getXPos())
+						canvas.drawBitmap(snakeTailWestBitmap, sourceRect, destRect, null);
+					else
+						canvas.drawBitmap(snakeTailEastBitmap, sourceRect, destRect, null);					
+			}
+			else canvas.drawBitmap(snakeBodyBitmap, sourceRect, destRect, null);
 		}
 		//boundingRect = destRect;
 	}
 
-	/* the update method for ship
-	public void update(long gameTime, int canvasWidth) {
-		//super.update();
-		mDirection = mNextDirection;
-		
-		calculateSourceRect(gameTime);
-		borders(canvasWidth);
-	}
+	/**
+	 * Metoda odpowiedzialna za aktualizacje weza w trakcie gry, przesuwa weza, no, tak naprawde to tworzy nowa glowe 
+	 * weza, o wspolrzednych zmienionych o rozmiar sprite'a w stosunku do starej glowy, w ktorym kierunku zmienionych 
+	 * to zalezy od kierunku. Nowa glowa jest wrzucana na poczatek listy, a ostatnia czesc ogona jest usuwana, 
+	 * chyba ze bool growSnake jest na true, wtedy nie jest usuwana i waz 'rosnie'. To jest tak proste ze 
+	 * az nie ogarniam... Czemu ja tego na Pascala nie klepalem tylko Tetrisa...
 	 */
-	
 	public void updateSnake() {
         
-
         SnakePiece head = snakeBody.get(0);
         SnakePiece newHead = new SnakePiece(1, 1);
 
+        /*
+        if(mNextDirection != mDirection){
+        	this.dirChange = true;
+        	this.changeCount = snakeBody.size();
+        }
+        if(dirChange) changeCount--;
+        */
         mDirection = mNextDirection;
 
         switch (mDirection) {
@@ -157,9 +237,8 @@ public class Snake {
 	        }
         }
 
-        // push a new head onto the ArrayList and pull off the tail
         snakeBody.add(0, newHead);
-        // except if we want the snake to grow
+
         if (!growSnake) {
         	snakeBody.remove(snakeBody.size() - 1);
         }
@@ -181,4 +260,58 @@ public class Snake {
 		sourceRect.right = sourceRect.left + spriteWidth;
 	}
 	*/
+
+	/*
+	 * 
+	 * Te metody chyba nie wymagaja komentarza, same settery i gettery
+	 * 
+	 */
+	
+	public int getXPos(){
+		return xPos;
+	}
+	
+	public void setXPos(int xPos){
+		this.xPos = xPos;
+	}
+	
+	public int getYPos(){
+		return yPos;
+	}
+	
+	public void setYPos(int yPos){
+		this.yPos = yPos;
+	}
+	
+	public int getDir(){
+		return mDirection;
+	}
+	
+	public void setDir(int dir){
+		this.mDirection = dir;
+	}
+	
+	public int getNextDir(){
+		return mNextDirection;
+	}
+	
+	public void setNextDir(int nDir){
+		this.mNextDirection = nDir;
+	}
+	
+	public ArrayList<SnakePiece> getSnakeBody(){
+		return snakeBody;
+	}
+	
+	public void setSnakeBody(ArrayList<SnakePiece> body){
+		this.snakeBody = body;
+	}
+	
+	public void setWidth(int width){
+		this.canvasWidth = width;
+	}
+	
+	public void setHeight(int height){
+		this.canvasHeight = height;
+	}
 }

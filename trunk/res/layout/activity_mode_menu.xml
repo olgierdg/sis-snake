@@ -5,23 +5,12 @@
     android:background="@drawable/cartton_snake" >
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="63dp"
-        android:onClick="backToMainMenu"
-        android:text="@string/back" />
-
-    <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="170dp"
         android:onClick="newNormalGame"
         android:text="@string/normal_mode" />
 

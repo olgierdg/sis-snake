@@ -11,14 +11,20 @@ import android.view.View;
 
 /**
  * Activity dla menu wyboru trybu gry. Layout jest w res/layout/activity_mode_menu.
+ * Te wszystkie Stringi, wiadomosci i w ogole sluza do przekazania dalej ustawien z menu glownego, 
+ * jak na razie dokladnie ustawienia wibracji i wyboru nowa gra/kontynuuj.
  * 
  * @author Olo
  *
  */
-public class ModeMenu extends Activity{
+public class ModeMenuActivity extends Activity{
 
-	public final static String EXTRA_MESSAGE = "game.ModeMenu.MESSAGE";
+	public final static String NEW_RESUME_MSG = "game.ModeMenu.NEW_RESUME_MSG";
+	public final static String VIBRATE_MSG = "game.ModeMenu.VIBRATE_MSG";
+	public final static String GAME_TYPE_MSG = "game.MainMenu.GAME_TYPE_MSG";
+	
 	private String message;
+	private String vibrate;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,9 +32,10 @@ public class ModeMenu extends Activity{
         super.onCreate(savedInstanceState);
         
         Intent intent = getIntent();
-		message = intent.getStringExtra(MainMenu.EXTRA_MESSAGE);
+		message = intent.getStringExtra(MainMenu.NEW_RESUME_MSG);
+		vibrate = intent.getStringExtra(MainMenu.VIBRATE_MSG);
 		
-        Log.d(this.getLocalClassName(),"Siema mode menu, msg: "+message);
+        Log.d(this.getLocalClassName(),"Siema mode menu, msg: "+vibrate);
         setContentView(R.layout.activity_mode_menu);
     }
 
@@ -48,18 +55,18 @@ public class ModeMenu extends Activity{
 	public void newNormalGame(View view){
 		
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, message);
+		intent.putExtra(NEW_RESUME_MSG, message);
+		intent.putExtra(VIBRATE_MSG, vibrate);
+		intent.putExtra(GAME_TYPE_MSG, "normal");
 	    startActivity(intent);
 	}
 	
-	/**
-	 * To co sie dzieje na buttonie back
-	 * 
-	 * @param view
-	 */
-	public void backToMainMenu(View view){
+	public void newPortalsGame(View view){
 		
-		Intent intent = new Intent(this, MainMenu.class);
+		Intent intent = new Intent(this, PortalsMenu.class);
+		intent.putExtra(NEW_RESUME_MSG, message);
+		intent.putExtra(VIBRATE_MSG, vibrate);
+		intent.putExtra(GAME_TYPE_MSG, "portals");
 	    startActivity(intent);
 	}
 }

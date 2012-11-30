@@ -12,5 +12,12 @@
     <string name="back">Back</string>
     <string name="title_activity_mode_menu">Mode Menu</string>
     <string name="resume">Resume</string>
+    <string name="settings">Settings</string>
+    <string name="settings_vibrate">Vibrate</string>
+    <string name="ok">OK</string>
+    <string name="title_settings_activity">Settings</string>
+    <string name="portals">Portals</string>
+    <string name="level_1">Level 1</string>
+    <string name="title_portals_menu">Portals Menu</string>
 
 </resources>

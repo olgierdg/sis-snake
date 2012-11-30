@@ -9,29 +9,28 @@ import model.ColisionDetector;
 import model.Snake;
 import model.SnakePiece;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Bundle;
+import android.graphics.Paint;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.game.R;
 
-public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback, SensorEventListener {
+/**
+ * implements SensorEventListener for sensors
+ * 
+ * @author Olo
+ *
+ */
+public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
 	private static Random generator = new Random();
 	private MainThread thread;
@@ -40,21 +39,30 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private Bitmap appleBitmap;
 
 	private Vibrator vibrator;
+	private boolean vibrate;
+	
+	private String gameType;
 	
 	private int downX;
-	//private int upX;
 	private int downY;
-	//private int upY;
+	private int score;
+	private int level;
+	private boolean gameOver;
 	
-	private Sensor mAccelerometer;
+	//private Sensor mAccelerometer;
 
-	public MainGamePanel(Context context, SensorManager sm, Display d, Vibrator vibrator) {
+	//public MainGamePanel(Context context, SensorManager sm, Display d, Vibrator vibrator) {
+	public MainGamePanel(Context context) {
 		super(context);
+		
 		getHolder().addCallback(this);
 		setFocusable(true);
-		mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-		this.vibrator = vibrator;
+		//mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		//sm.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+			
+		this.score = 0;
+		this.level = 1;
+		this.gameOver = false;
 		
 		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.obstacle);
 		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_east);
@@ -106,12 +114,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 	}
-
-	/*
-	public void newGame(){
-		snake = new Snake(Bitmap.createScaledBitmap(snakeBitmap, 20, 20, true), 40, 40);
-	}
-	*/
 	
 	/**
 	 * Metoda tworzy nowe jablko. Niestety mozna to wywolac dopiero po surfaceCreated bo odnosi sie do rozmiarow
@@ -124,11 +126,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int appleX;
 		do{
 			appleX = generator.nextInt(i)*20;
+			for(SnakePiece s : snake.getSnakeBody()){
+				if(appleX == s.getXPos()){
+					appleX = 13;
+					break;
+				}
+			}
 		}while(appleX % 20 != 0);
 		
 		int appleY;
 		do{
 			appleY = generator.nextInt(j)*20;
+			for(SnakePiece s : snake.getSnakeBody()){
+				if(appleY == s.getYPos()){
+					appleY = 13;
+					break;
+				}
+			}
+			if(appleY < 40) appleY = 43;
 		}while(appleY % 20 != 0);	
 		
 		apples.add(new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), appleX, appleY));		
@@ -161,11 +176,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 */
 	protected void render(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
-		snake.draw(canvas);
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		canvas.drawLine((float)0, (float)40, (float)getWidth(), (float)40, paint);
+		paint.setTextSize(22);
+		canvas.drawText("Score: "+score, 30, 25, paint);
+		canvas.drawText("Level: "+level, 300, 25, paint);
+		
+		//if(gameType.equalsIgnoreCase("portals")) Map.draw(canvas);
+		
 		if(!apples.isEmpty())
-		for (Apple obstacle : apples) {
-			obstacle.draw(canvas);
-		}
+			for (Apple obstacle : apples) {
+				obstacle.draw(canvas);
+			}
+		
+		snake.draw(canvas);
+		
 	}
 
 	/**
@@ -174,15 +200,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void update() {
 		
 		if (apples.isEmpty()) createApple();
-		
+		int sleepTime = 300 - level*50;
 		try {
-			MainThread.sleep(300);
+			MainThread.sleep(sleepTime);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		checkAndHandleCollisions();
-		snake.updateSnake();
+		if(!gameOver) snake.updateSnake();
 	}
 
 	/**
@@ -192,13 +217,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		Apple obstacle = apples.get(0);
 		if (ColisionDetector.isCollision(snake, obstacle)) {
-			vibrator.vibrate(500);
+			this.incrementScore();
+			if(vibrate) vibrator.vibrate(500);
 			apples.remove(obstacle);
 			snake.setGrowSnake(true);
 			render(thread.getCanvas());
 		}
 		if (ColisionDetector.isCollision(snake)) {
-			vibrator.vibrate(500);
+			this.gameOver = true;
+			vibrator.vibrate(500);		
+			Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 			thread.setRunning(false);
 		}
 	}
@@ -207,6 +235,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		return this.thread;
 	}
 
+	/*
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 		// TODO Auto-generated method stub
 		
@@ -219,6 +248,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	    float roll_angle = event.values[1];
 	    //spaceship.handleActionMove(pitch_angle, roll_angle, getWidth(), getHeight());
 	}
+	*/
 	
 	/**
 	 * Metoda zapisuje stan gry uzywajac do tego Shared Preferences.
@@ -227,27 +257,31 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 */
 	public void saveState(SharedPreferences.Editor editor) {
 
-		Log.d("game.MainGamePanel", "Siema gejm sejw");
+		Log.d("game.MainGamePanel", "Siema gejm sejw "+gameOver);
         
-        //zapis weza
-        //editor.putInt("headXPos", snake.getXPos());
-        //editor.putInt("headYPos", snake.getYPos());
-        
+        //zapis weza      
         editor.putInt("direction", snake.getDir());
         editor.putInt("nextDirection", snake.getNextDir());
         
         editor.putInt("snakeBodySize", snake.getSnakeBody().size());
 
-        int i = 0;
-        for(SnakePiece s: snake.getSnakeBody()){
-        	editor.putInt("snakeBodyPiece"+i+"X", s.getXPos());
-        	editor.putInt("snakeBodyPiece"+i+"Y", s.getYPos());
+        for(int i = 0; i<snake.getSnakeBody().size(); i++){
+        	editor.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());
+        	//Log.d("game.Snake", "snakeBodyPiece"+i+"X"+snake.getSnakeBody().get(i).getXPos());
+        	
+        	editor.putInt("snakeBodyPiece"+i+"Y", snake.getSnakeBody().get(i).getYPos());
+        	//Log.d("game.Snake", "snakeBodyPiece"+i+"Y"+snake.getSnakeBody().get(i).getYPos());
         }
         
+        //zapis jablka
 		if(!apples.isEmpty()){
 			editor.putInt("appleXPos", apples.get(0).getXPosition());
 			editor.putInt("appleYPos", apples.get(0).getYPosition()); 
         }
+		
+		editor.putBoolean("gameOver", gameOver);	
+		editor.putInt("Score", score);
+		editor.putInt("Level", level);
     }
 	
 	/**
@@ -257,8 +291,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 */
 	public void restoreState(SharedPreferences settings) {
 		
-		Log.d("game.MainGamePanel", "Siema gejm lold");
-		
 		ArrayList<SnakePiece> body = new ArrayList<SnakePiece>();
 		int snakeBodySize = settings.getInt("snakeBodySize", 0);
 		
@@ -266,8 +298,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			body.add(new SnakePiece(settings.getInt("snakeBodyPiece"+i+"X", 0), settings.getInt("snakeBodyPiece"+i+"Y", 0)));
 		}
 		
-		snake.setXPos(settings.getInt("headXPos", 40));
-		snake.setYPos(settings.getInt("headYPos", 40));
 		snake.setDir(settings.getInt("direction", Snake.EAST));
 		if(snakeBodySize != 0){
 			snake.setSnakeBody(body);
@@ -278,7 +308,31 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int appleX = settings.getInt("appleXPos", 13);
 		int appleY = settings.getInt("appleYPos", 13);
 		if(appleX != 13 && appleY != 13) apples.add(new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), appleX, appleY));
+		else createApple();
+		
+		this.score = settings.getInt("Score", 0);
+		this.level = settings.getInt("Level", 1);
+		this.gameOver = settings.getBoolean("gameOver", false);
+
+		if(gameOver) this.thread.setGameOver(true);
 
     }
+	
+	public void setVibrate(boolean vibrate){
+		this.vibrate = vibrate;
+	}
+	
+	public void setVibrator(Vibrator vibrator){
+		this.vibrator = vibrator;
+	}
+	
+	public void setGameType(String gameType){
+		this.gameType = gameType;
+	}
+	
+	public void incrementScore(){
+		score+=10;
+		if(score % 100 == 0) level++;
+	}
 	
 }

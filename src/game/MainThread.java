@@ -9,9 +9,11 @@ public class MainThread extends Thread {
 	private MainGamePanel gamePanel;
 	private boolean running;
 	private Canvas canvas;
+	private boolean gameOver;
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
+		gameOver = false;
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}
@@ -42,21 +44,17 @@ public class MainThread extends Thread {
 				canvas = this.surfaceHolder.lockCanvas();
 				synchronized (surfaceHolder) {
 					if(canvas != null){
-						gamePanel.update();
-						if(running)
+						if(gameOver){
 							gamePanel.render(canvas);
+							gameOver = false;
+							setRunning(false);
+						}else{					
+							if(running)
+								gamePanel.update();
+								gamePanel.render(canvas);
+						}
 					}
 				}
-				/*
-				synchronized (mPauseLock) {
-				    while (mPaused) {
-				        try {
-				            mPauseLock.wait();
-				        } catch (InterruptedException e) {
-				        }
-				    }
-				}
-				*/
 				if (canvas != null) {
 					surfaceHolder.unlockCanvasAndPost(canvas);
 				}
@@ -69,5 +67,9 @@ public class MainThread extends Thread {
 	
 	public void setRunning(boolean running) {
 		this.running = running;
+	}
+	
+	public void setGameOver(boolean b){
+		gameOver = true;
 	}
 }

@@ -9,9 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/button1"
-        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/button1"
-        android:layout_marginBottom="154dp"
+        android:layout_centerVertical="true"
         android:onClick="resume"
         android:text="@string/resume" />
 
@@ -21,8 +20,19 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button3"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="47dp"
+        android:layout_marginBottom="23dp"
         android:onClick="newGame"
         android:text="@string/new_game" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_alignRight="@+id/button3"
+        android:layout_below="@+id/button3"
+        android:layout_marginTop="24dp"
+        android:onClick="settings"
+        android:text="@string/settings" />
 
 </RelativeLayout>

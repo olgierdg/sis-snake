@@ -41,8 +41,8 @@ public class Snake {
 	private Bitmap snakeTailNorthBitmap;
 	private Bitmap snakeTailSouthBitmap;
 	
-	protected int xPos;
-	protected int yPos;
+	//protected int xPos;
+	//protected int yPos;
 	private int mDirection = EAST;
     private int mNextDirection = EAST;
     public static final int NORTH = 1;
@@ -80,10 +80,11 @@ public class Snake {
 		this.snakeTailNorthBitmap = tailNorthBitmap;
 		this.snakeTailSouthBitmap = tailSouthBitmap;
 		
-		this.xPos = xPos;
-		this.yPos = yPos;
+		//this.xPos = xPos;
+		//this.yPos = yPos;
 		snakeBody = new ArrayList<SnakePiece>();
 		snakeBody.add(new SnakePiece(xPos, yPos));
+		
 		//frameNr = frameCount;
 		//spriteWidth = bitmap.getWidth() / frameCount;
 		
@@ -146,7 +147,7 @@ public class Snake {
 		}
 	}
 
-
+	/*
 	public void borders(int canvasWidth) {
 		if (xPos > canvasWidth - spriteWidth) {
 			xPos = spriteWidth;
@@ -155,6 +156,7 @@ public class Snake {
 			xPos = 0;
 		}
 	}
+	*/
 
 	/**
 	 * Metoda rysuje snejka na canvasie
@@ -227,12 +229,12 @@ public class Snake {
 	        }
 	        case NORTH: {
 	            newHead = new SnakePiece(head.xPos, head.yPos - 20);
-	            if(newHead.yPos == -20) newHead.yPos = canvasHeight-20-(canvasHeight % 20); 
+	            if(newHead.yPos == 20) newHead.yPos = canvasHeight-20-(canvasHeight % 20); 
 	            break;
 	        }
 	        case SOUTH: {
 	            newHead = new SnakePiece(head.xPos, head.yPos + 20);
-	            if(newHead.yPos > canvasHeight-19) newHead.yPos = 0;
+	            if(newHead.yPos > canvasHeight-19) newHead.yPos = 40;
 	            break;
 	        }
         }
@@ -266,23 +268,7 @@ public class Snake {
 	 * Te metody chyba nie wymagaja komentarza, same settery i gettery
 	 * 
 	 */
-	
-	public int getXPos(){
-		return xPos;
-	}
-	
-	public void setXPos(int xPos){
-		this.xPos = xPos;
-	}
-	
-	public int getYPos(){
-		return yPos;
-	}
-	
-	public void setYPos(int yPos){
-		this.yPos = yPos;
-	}
-	
+
 	public int getDir(){
 		return mDirection;
 	}

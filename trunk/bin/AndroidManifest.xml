@@ -24,7 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="game.ModeMenu" android:label="@string/title_activity_mode_menu"></activity>
+        <activity android:name="game.ModeMenuActivity" android:label="@string/title_activity_mode_menu"></activity>
+        <activity android:label="@string/settings" android:name="game.SettingsActivity"></activity>
+        <activity android:label="@string/title_portals_menu" android:name="game.PortalsMenu"></activity>
     </application>
 
 </manifest>

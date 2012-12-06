@@ -25,6 +25,8 @@ public class MainActivity extends Activity {
     //private WindowManager mWindowManager;
     //private Display mDisplay;
     private Vibrator vibrator;
+    
+    private static String ICICLE_KEY = "snake-view";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,21 @@ public class MainActivity extends Activity {
 		
 		SharedPreferences settings = getPreferences(MODE_PRIVATE);
 
-		if(message.equalsIgnoreCase("resumeGame"))
-			panel.restoreState(settings);
         if(vibrate.equalsIgnoreCase("vibrateOn"))
         	panel.setVibrate(true);
         if(vibrate.equalsIgnoreCase("vibrateOff"))
         	panel.setVibrate(false);
+        
+        if (savedInstanceState == null) {
+        	if(message.equalsIgnoreCase("resumeGame"))
+    			panel.restoreState(settings);
+        }else{
+
+            Bundle map = savedInstanceState.getBundle(ICICLE_KEY);
+            if (map != null) {
+            	panel.restoreState(map);
+            }
+        }
 	}
 	
 	@Override
@@ -77,4 +88,9 @@ public class MainActivity extends Activity {
 		editor.commit();
     }
 	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Store the game state
+        outState.putBundle(ICICLE_KEY, panel.saveState());
+    }
 }

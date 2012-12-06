@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -285,7 +286,44 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 	
 	/**
-	 * Metoda wczytuje stan gry
+	 * Metoda zapisuje stan gry uzywajac do tego Bundle.
+	 * 
+	 * @param editor
+	 */
+	public Bundle saveState() {
+
+		Log.d("game.MainGamePanel", "Siema gejm sejw orientejszyn");
+		
+		Bundle bundle = new Bundle();
+        //zapis weza      
+		bundle.putInt("direction", snake.getDir());
+		bundle.putInt("nextDirection", snake.getNextDir());
+        
+		bundle.putInt("snakeBodySize", snake.getSnakeBody().size());
+
+        for(int i = 0; i<snake.getSnakeBody().size(); i++){
+        	bundle.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());
+        	//Log.d("game.Snake", "snakeBodyPiece"+i+"X"+snake.getSnakeBody().get(i).getXPos());
+        	
+        	bundle.putInt("snakeBodyPiece"+i+"Y", snake.getSnakeBody().get(i).getYPos());
+        	//Log.d("game.Snake", "snakeBodyPiece"+i+"Y"+snake.getSnakeBody().get(i).getYPos());
+        }
+        
+        //zapis jablka
+		if(!apples.isEmpty()){
+			bundle.putInt("appleXPos", apples.get(0).getXPosition());
+			bundle.putInt("appleYPos", apples.get(0).getYPosition()); 
+        }
+		
+		bundle.putBoolean("gameOver", gameOver);	
+		bundle.putInt("Score", score);
+		bundle.putInt("Level", level);
+		
+		return bundle;
+    }
+	
+	/**
+	 * Metoda wczytuje stan gry uzywajac SharedPreferences
 	 * 
 	 * @param settings
 	 */
@@ -313,6 +351,40 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.score = settings.getInt("Score", 0);
 		this.level = settings.getInt("Level", 1);
 		this.gameOver = settings.getBoolean("gameOver", false);
+
+		if(gameOver) this.thread.setGameOver(true);
+
+    }
+	
+	/**
+	 * Metoda wczytuje stan gry uzywajac Bundle
+	 * 
+	 * @param settings
+	 */
+	public void restoreState(Bundle bundle) {
+		
+		ArrayList<SnakePiece> body = new ArrayList<SnakePiece>();
+		int snakeBodySize = bundle.getInt("snakeBodySize", 0);
+		
+		for(int i = 0; i<snakeBodySize; i++){
+			body.add(new SnakePiece(bundle.getInt("snakeBodyPiece"+i+"X", 0), bundle.getInt("snakeBodyPiece"+i+"Y", 0)));
+		}
+		
+		snake.setDir(bundle.getInt("direction", Snake.EAST));
+		if(snakeBodySize != 0){
+			snake.setSnakeBody(body);
+			snake.setGrowSnake(false);
+		}
+		snake.setNextDir(bundle.getInt("nextDirection", Snake.EAST));
+
+		int appleX = bundle.getInt("appleXPos", 13);
+		int appleY = bundle.getInt("appleYPos", 13);
+		if(appleX != 13 && appleY != 13) apples.add(new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), appleX, appleY));
+		else createApple();
+		
+		this.score = bundle.getInt("Score", 0);
+		this.level = bundle.getInt("Level", 1);
+		this.gameOver = bundle.getBoolean("gameOver", false);
 
 		if(gameOver) this.thread.setGameOver(true);
 

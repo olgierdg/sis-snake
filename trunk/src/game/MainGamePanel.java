@@ -42,7 +42,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private Vibrator vibrator;
 	private boolean vibrate;
 	
-	private String gameType;
+	private String gameMode;
 	
 	private int downX;
 	private int downY;
@@ -50,10 +50,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private int level;
 	private boolean gameOver;
 	
+	private Map map;
 	//private Sensor mAccelerometer;
 
 	//public MainGamePanel(Context context, SensorManager sm, Display d, Vibrator vibrator) {
-	public MainGamePanel(Context context) {
+	public MainGamePanel(Context context, String gameMode) {
 		super(context);
 		
 		getHolder().addCallback(this);
@@ -64,8 +65,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.score = 0;
 		this.level = 1;
 		this.gameOver = false;
+		this.gameMode = gameMode;
 		
-		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.obstacle);
+		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
 		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_east);
 		Bitmap snakeHeadWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_west);
 		Bitmap snakeHeadNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_north);
@@ -85,9 +87,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
-				40, 40);
+				80, 80, gameMode);
+				
+		Bitmap wallBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wall);
+		Bitmap orangePortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange);
+		Bitmap bluePortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue);
+		map = new Map(Bitmap.createScaledBitmap(wallBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(orangePortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(bluePortalBitmap, 20, 20, true));
 		
 		thread = new MainThread(getHolder(), this);
+		
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -98,6 +108,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		snake.setWidth(getWidth());
 		snake.setHeight(getHeight());
 		
+		map.setWidth(getWidth());
+		map.setHeight(getHeight());
+		if(gameMode.equals("walls")) {
+			map.generateWalls();
+			//map.showLevel();
+		}
+		if(gameMode.equals("portals")) {
+			map.generateLevel();
+			//map.showLevel();
+		}
+		
+		thread.setGameType(gameMode);
 		//if(apples.isEmpty()) createApple();
 		
 		thread.setRunning(true);
@@ -124,30 +146,35 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int i = getWidth()/20;
 		int j = getHeight()/20;
 		
-		int appleX;
+		Apple apple = new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), 0, 0);
 		do{
-			appleX = generator.nextInt(i)*20;
-			for(SnakePiece s : snake.getSnakeBody()){
-				if(appleX == s.getXPos()){
-					appleX = 13;
-					break;
+			int appleX;
+			do{
+				appleX = generator.nextInt(i)*20;
+				for(SnakePiece s : snake.getSnakeBody()){
+					if(appleX == s.getXPos()){
+						appleX = 13;
+						break;
+					}
 				}
-			}
-		}while(appleX % 20 != 0);
-		
-		int appleY;
-		do{
-			appleY = generator.nextInt(j)*20;
-			for(SnakePiece s : snake.getSnakeBody()){
-				if(appleY == s.getYPos()){
-					appleY = 13;
-					break;
+			}while(appleX % 20 != 0);
+			apple.setXPos(appleX);
+			
+			int appleY;
+			do{
+				appleY = generator.nextInt(j)*20;
+				for(SnakePiece s : snake.getSnakeBody()){
+					if(appleY == s.getYPos()){
+						appleY = 13;
+						break;
+					}
 				}
-			}
-			if(appleY < 40) appleY = 43;
-		}while(appleY % 20 != 0);	
-		
-		apples.add(new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), appleX, appleY));		
+				if(appleY < 40) appleY = 43;
+			}while(appleY % 20 != 0);
+			apple.setYPos(appleY);
+			
+		}while(ColisionDetector.isCollision(apple, map));
+		apples.add(apple);		
 	}
 
 	/**
@@ -177,6 +204,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 */
 	protected void render(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
+		if(gameMode.equals("portals") || gameMode.equals("walls")) map.draw(canvas);
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 		canvas.drawLine((float)0, (float)40, (float)getWidth(), (float)40, paint);
@@ -194,6 +222,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		snake.draw(canvas);
 		
 	}
+
 
 	/**
 	 * Metoda aktualizuje stan gry - tworzy jablka (jak trzeba), sprawdza i obsluguje kolizje i aktualizuje weza.
@@ -217,6 +246,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void checkAndHandleCollisions() {
 		
 		Apple obstacle = apples.get(0);
+		if(gameMode.equals("walls") || gameMode.equals("portals"))
+			if (ColisionDetector.isCollisionWalls(snake, map)) {
+				this.gameOver = true;
+				vibrator.vibrate(500);		
+				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
+				thread.setRunning(false);
+			}
 		if (ColisionDetector.isCollision(snake, obstacle)) {
 			this.incrementScore();
 			if(vibrate) vibrator.vibrate(500);
@@ -276,8 +312,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         
         //zapis jablka
 		if(!apples.isEmpty()){
-			editor.putInt("appleXPos", apples.get(0).getXPosition());
-			editor.putInt("appleYPos", apples.get(0).getYPosition()); 
+			editor.putInt("appleXPos", apples.get(0).getXPos());
+			editor.putInt("appleYPos", apples.get(0).getYPos()); 
         }
 		
 		editor.putBoolean("gameOver", gameOver);	
@@ -311,8 +347,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         
         //zapis jablka
 		if(!apples.isEmpty()){
-			bundle.putInt("appleXPos", apples.get(0).getXPosition());
-			bundle.putInt("appleYPos", apples.get(0).getYPosition()); 
+			bundle.putInt("appleXPos", apples.get(0).getXPos());
+			bundle.putInt("appleYPos", apples.get(0).getYPos()); 
         }
 		
 		bundle.putBoolean("gameOver", gameOver);	
@@ -399,7 +435,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 	
 	public void setGameType(String gameType){
-		this.gameType = gameType;
+		this.gameMode = gameType;
 	}
 	
 	public void incrementScore(){

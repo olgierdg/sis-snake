@@ -46,13 +46,13 @@ public class PortalsMenu extends Activity{
         return true;
     }
 
-	public void newPortalsGame(View view, int level){
+	public void newPortalsGameLevel1(View view){
 		
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(NEW_RESUME_MSG, message);
-		intent.putExtra(VIBRATE_MSG, vibrate);
-		intent.putExtra(GAME_TYPE_MSG, gameType);
-		intent.putExtra(LEVEL_MSG, level);
+		intent.putExtra("NEW_RESUME_MSG", message);
+		intent.putExtra("VIBRATE_MSG", vibrate);
+		intent.putExtra("GAME_TYPE_MSG", gameType);
+		intent.putExtra("LEVEL_MSG", 1);
 	    startActivity(intent);
 	}
 }

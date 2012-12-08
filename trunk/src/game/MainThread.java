@@ -10,10 +10,13 @@ public class MainThread extends Thread {
 	private boolean running;
 	private Canvas canvas;
 	private boolean gameOver;
-
+	private String gameType;
+	private boolean drawMap;
+	
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
 		gameOver = false;
+		drawMap = false;
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}
@@ -44,6 +47,10 @@ public class MainThread extends Thread {
 				canvas = this.surfaceHolder.lockCanvas();
 				synchronized (surfaceHolder) {
 					if(canvas != null){
+						//if(drawMap){
+						//	drawMap = false;
+						//	gamePanel.renderMap(canvas);
+						//}
 						if(gameOver){
 							gamePanel.render(canvas);
 							gameOver = false;
@@ -71,5 +78,10 @@ public class MainThread extends Thread {
 	
 	public void setGameOver(boolean b){
 		gameOver = true;
+	}
+	
+	public void setGameType(String gameType){
+		this.gameType = gameType;
+		if(gameType.equals("portals")) drawMap = true;
 	}
 }

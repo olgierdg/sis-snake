@@ -11,9 +11,9 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int cartton_snake=0x7f020000;
-        public static final int enemy=0x7f020001;
-        public static final int food=0x7f020002;
+        public static final int apple=0x7f020000;
+        public static final int blue=0x7f020001;
+        public static final int cartton_snake=0x7f020002;
         public static final int glowa_east=0x7f020003;
         public static final int glowa_north=0x7f020004;
         public static final int glowa_south=0x7f020005;
@@ -25,38 +25,51 @@ public final class R {
         public static final int ogon_north=0x7f02000b;
         public static final int ogon_south=0x7f02000c;
         public static final int ogon_west=0x7f02000d;
-        public static final int rocket=0x7f02000e;
-        public static final int space_ship_transp=0x7f02000f;
-        public static final int spaceship=0x7f020010;
-        public static final int tulow=0x7f020011;
+        public static final int orange=0x7f02000e;
+        public static final int tulow=0x7f02000f;
+        public static final int wall=0x7f020010;
     }
     public static final class id {
         public static final int button1=0x7f070001;
+        public static final int button2=0x7f070002;
         public static final int button3=0x7f070000;
-        public static final int menu_settings=0x7f070002;
+        public static final int checkBox1=0x7f070003;
+        public static final int menu_settings=0x7f070004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_main_menu=0x7f030001;
         public static final int activity_mode_menu=0x7f030002;
+        public static final int activity_portals_menu=0x7f030003;
+        public static final int activity_settings=0x7f030004;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
         public static final int activity_main_menu=0x7f060001;
         public static final int activity_mode_menu=0x7f060002;
+        public static final int activity_portals_menu=0x7f060003;
+        public static final int activity_settings_menu=0x7f060004;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int back=0x7f040009;
         public static final int exit=0x7f040007;
         public static final int hello_world=0x7f040001;
+        public static final int level_1=0x7f040011;
         public static final int menu_settings=0x7f040002;
         public static final int new_game=0x7f040005;
         public static final int normal_mode=0x7f040008;
+        public static final int ok=0x7f04000e;
+        public static final int portals=0x7f040010;
         public static final int resume=0x7f04000b;
+        public static final int settings=0x7f04000c;
+        public static final int settings_vibrate=0x7f04000d;
         public static final int title_activity_main=0x7f040003;
         public static final int title_activity_main_menu=0x7f040006;
         public static final int title_activity_mode_menu=0x7f04000a;
+        public static final int title_portals_menu=0x7f040012;
+        public static final int title_settings_activity=0x7f04000f;
+        public static final int walls=0x7f040013;
         public static final int warning=0x7f040004;
     }
     public static final class style {

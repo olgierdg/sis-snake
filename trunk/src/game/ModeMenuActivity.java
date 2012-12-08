@@ -55,9 +55,18 @@ public class ModeMenuActivity extends Activity{
 	public void newNormalGame(View view){
 		
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(NEW_RESUME_MSG, message);
-		intent.putExtra(VIBRATE_MSG, vibrate);
-		intent.putExtra(GAME_TYPE_MSG, "normal");
+		intent.putExtra("NEW_RESUME_MSG", message);
+		intent.putExtra("VIBRATE_MSG", vibrate);
+		intent.putExtra("GAME_TYPE_MSG", "normal");
+	    startActivity(intent);
+	}
+	
+	public void newWallsGame(View view){
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("NEW_RESUME_MSG", message);
+		intent.putExtra("VIBRATE_MSG", vibrate);
+		intent.putExtra("GAME_TYPE_MSG", "walls");
 	    startActivity(intent);
 	}
 	

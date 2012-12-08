@@ -33,9 +33,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		Intent intent = getIntent();
-		String message = intent.getStringExtra(ModeMenuActivity.NEW_RESUME_MSG);
-		String vibrate = intent.getStringExtra(ModeMenuActivity.VIBRATE_MSG);
-		String gameType  = intent.getStringExtra(ModeMenuActivity.GAME_TYPE_MSG);
+		String message = intent.getStringExtra("NEW_RESUME_MSG");
+		String vibrate = intent.getStringExtra("VIBRATE_MSG");
+		String gameMode  = intent.getStringExtra("GAME_TYPE_MSG");
 		
 		Log.d(this.getLocalClassName(),"Siema mainActivity onCreate, msg: "+vibrate);
 
@@ -49,9 +49,8 @@ public class MainActivity extends Activity {
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         
 	    //panel = new MainGamePanel(this, mSensorManager, mDisplay, vibrator);
-        panel = new MainGamePanel(this);
+        panel = new MainGamePanel(this, gameMode);
         panel.setVibrator(vibrator);
-        panel.setGameType(gameType);
 		setContentView(panel);
 		
 		SharedPreferences settings = getPreferences(MODE_PRIVATE);

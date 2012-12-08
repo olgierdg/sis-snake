@@ -55,6 +55,7 @@ public class Snake {
     boolean growSnake;
     boolean dirChange;
     int changeCount;
+    String gameMode;
 
 	//public Snake(Bitmap bitmap, int xPos, int yPos, int fps, int frameCount) {
     public Snake(Bitmap headEastBitmap, 
@@ -66,7 +67,7 @@ public class Snake {
     		Bitmap tailWestBitmap,
     		Bitmap tailNorthBitmap,
     		Bitmap tailSouthBitmap,
-    		int xPos, int yPos) {
+    		int xPos, int yPos, String gameMode) {
     	
 		this.snakeHeadEastBitmap = headEastBitmap;
 		this.snakeHeadWestBitmap = headWestBitmap;
@@ -80,6 +81,7 @@ public class Snake {
 		this.snakeTailNorthBitmap = tailNorthBitmap;
 		this.snakeTailSouthBitmap = tailSouthBitmap;
 		
+		this.gameMode = gameMode;
 		//this.xPos = xPos;
 		//this.yPos = yPos;
 		snakeBody = new ArrayList<SnakePiece>();
@@ -165,7 +167,7 @@ public class Snake {
 	 */
 	public void draw(Canvas canvas) {
 		for(int i = 0; i<snakeBody.size(); i++){
-			Rect destRect = new Rect(snakeBody.get(i).xPos, snakeBody.get(i).yPos, snakeBody.get(i).xPos + spriteWidth, snakeBody.get(i).yPos + spriteHeight);
+			Rect destRect = new Rect(snakeBody.get(i).getXPos(), snakeBody.get(i).getYPos(), snakeBody.get(i).getXPos() + spriteWidth, snakeBody.get(i).getYPos() + spriteHeight);
 			if(i == 0){
 				if(this.mDirection == EAST)
 					canvas.drawBitmap(snakeHeadEastBitmap, sourceRect, destRect, null);
@@ -218,23 +220,23 @@ public class Snake {
 
         switch (mDirection) {
 	        case EAST: {
-	            newHead = new SnakePiece(head.xPos + 20, head.yPos);
-	            if(newHead.xPos > canvasWidth-19) newHead.xPos = 0;
+	            newHead = new SnakePiece(head.getXPos() + 20, head.getYPos());
+	            if(newHead.getXPos() > canvasWidth-19) newHead.setXPos(0);
 	            break;
 	        }
 	        case WEST: {
-	            newHead = new SnakePiece(head.xPos - 20, head.yPos);
-	            if(newHead.xPos == -20) newHead.xPos = canvasWidth-20-(canvasWidth % 20);
+	            newHead = new SnakePiece(head.getXPos() - 20, head.getYPos());
+	            if(newHead.getXPos() == -20) newHead.setXPos(canvasWidth-20-(canvasWidth % 20));
 	            break;
 	        }
 	        case NORTH: {
-	            newHead = new SnakePiece(head.xPos, head.yPos - 20);
-	            if(newHead.yPos == 20) newHead.yPos = canvasHeight-20-(canvasHeight % 20); 
+	            newHead = new SnakePiece(head.getXPos(), head.getYPos() - 20);
+	            if(newHead.getYPos()== 20) newHead.setYPos(canvasHeight-20-(canvasHeight % 20)); 
 	            break;
 	        }
 	        case SOUTH: {
-	            newHead = new SnakePiece(head.xPos, head.yPos + 20);
-	            if(newHead.yPos > canvasHeight-19) newHead.yPos = 40;
+	            newHead = new SnakePiece(head.getXPos(), head.getYPos() + 20);
+	            if(newHead.getYPos() > canvasHeight-19) newHead.setYPos(40);
 	            break;
 	        }
         }

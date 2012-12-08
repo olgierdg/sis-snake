@@ -35,11 +35,19 @@ public class Apple {
 		return isTouched;
 	}
 	
-	public int getXPosition(){
+	public int getXPos(){
 		return xPos;
 	}
 	
-	public int getYPosition(){
+	public void setXPos(int x){
+		xPos = x;
+	}
+	
+	public int getYPos(){
 		return xPos;
+	}
+	
+	public void setYPos(int y){
+		yPos = y;
 	}
 }

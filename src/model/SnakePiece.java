@@ -1,25 +1,33 @@
 package model;
 
+import game.Coordinates;
+
 public class SnakePiece {
 
-	protected int xPos;
-	protected int yPos;
+	protected Coordinates coords;
 	
 	public SnakePiece(int x, int y){
-		this.xPos = x;
-		this.yPos = y;
+		coords = new Coordinates(x, y);
 	}
 	
 	public SnakePiece(SnakePiece s){
-		this.xPos = s.xPos;
-		this.yPos = s.yPos;
+		this.coords.setX(s.getXPos());
+		this.coords.setY(s.getYPos());
 	}
 	
 	public int getXPos(){
-		return xPos;
+		return coords.getXPos();
 	}
 	
 	public int getYPos(){
-		return yPos;
+		return coords.getYPos();
+	}
+	
+	public void setXPos(int x){
+		this.coords.setX(x);
+	}
+	
+	public void setYPos(int y){
+		this.coords.setY(y);
 	}
 }

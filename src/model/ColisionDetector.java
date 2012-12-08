@@ -1,5 +1,11 @@
 package model;
 
+import java.util.ListIterator;
+
+import android.util.Log;
+import game.Coordinates;
+import game.Map;
+
 /**
  * Zerzniety z zajec detektor kolizji. Co sie bede meczyl, swoje wymyslal, jak to jest tak pieknie. 
  * Dziala to inaczej niz na zajeciach, nie ma zadnych kwadratow, tylko wspolrzedne.
@@ -19,7 +25,7 @@ public final class ColisionDetector {
 	public static boolean isCollision(Snake snake, Apple apple) {
 		SnakePiece head = snake.getHead();
 
-		if((head.xPos == apple.xPos) && (head.yPos == apple.yPos)) return true;
+		if((head.getXPos() == apple.xPos) && (head.getYPos() == apple.yPos)) return true;
 		return false;
 	}
 	
@@ -36,14 +42,48 @@ public final class ColisionDetector {
 		for(int i = 1; i<snake.snakeBody.size(); i++){
 			SnakePiece s = snake.snakeBody.get(i);
 			if(dir == Snake.NORTH)
-				if((head.xPos == s.xPos) && (head.yPos == s.yPos+20)) return true;
+				if((head.getXPos() == s.getXPos()) && (head.getYPos() == s.getYPos()+20)) return true;
 			if(dir == Snake.SOUTH)
-				if((head.xPos == s.xPos) && (head.yPos == s.yPos-20)) return true;
+				if((head.getXPos() == s.getXPos()) && (head.getYPos() == s.getYPos()-20)) return true;
 			if(dir == Snake.EAST)
-				if((head.xPos == s.xPos-20) && (head.yPos == s.yPos)) return true;
+				if((head.getXPos() == s.getXPos()-20) && (head.getYPos() == s.getYPos())) return true;
 			if(dir == Snake.WEST)
-				if((head.xPos == s.xPos+20) && (head.yPos == s.yPos)) return true;
+				if((head.getXPos() == s.getXPos()+20) && (head.getYPos() == s.getYPos())) return true;
 		}
 		return false;
 	}
+	
+	public static boolean isCollisionWalls(Snake snake, Map map){
+		SnakePiece head = snake.getHead();
+		int dir = snake.getDir();
+		ListIterator<Coordinates> it = map.getLevel().listIterator();
+		while(it.hasNext()){
+			Coordinates c = it.next();
+			if(dir == Snake.NORTH)
+				if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()+20)) return true;
+			if(dir == Snake.SOUTH)
+				if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()-20)) return true;
+			if(dir == Snake.EAST)
+				if((head.getXPos() == c.getXPos()-20) && (head.getYPos() == c.getYPos())) return true;
+			if(dir == Snake.WEST)
+				if((head.getXPos() == c.getXPos()+20) && (head.getYPos() == c.getYPos())) return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean isCollision(Apple apple, Map map){
+		ListIterator<Coordinates> it = map.getLevel().listIterator();
+		while(it.hasNext()){
+			Coordinates c = it.next();
+			if((c.getXPos() == apple.xPos) && (c.getYPos() == apple.yPos)) return true;
+			return false;
+		}
+		
+		return false;
+	}
+	
+	//public static boolean isCollisionPortals(Snake snake, Map map){
+		
+	//}
 }

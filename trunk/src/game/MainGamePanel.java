@@ -1,11 +1,14 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.Vector;
 
 import model.Apple;
 import model.ColisionDetector;
+import model.Coordinates;
+import model.Portal;
 import model.Snake;
 import model.SnakePiece;
 
@@ -67,6 +70,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.gameOver = false;
 		this.gameMode = gameMode;
 		
+		Bitmap wallBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wall);
+		Bitmap orangeWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_west);
+		Bitmap orangeEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_east);
+		Bitmap blueWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_west);
+		Bitmap blueEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_east);
+		map = new Map(Bitmap.createScaledBitmap(wallBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(orangeWestPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(orangeEastPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(blueWestPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(blueEastPortalBitmap, 20, 20, true),
+				gameMode);
+		
 		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
 		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_east);
 		Bitmap snakeHeadWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_west);
@@ -87,19 +102,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
-				80, 80, gameMode);
+				80, 80, gameMode, map);
 				
-		Bitmap wallBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wall);
-		Bitmap orangeWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_west);
-		Bitmap orangeEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_east);
-		Bitmap blueWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_west);
-		Bitmap blueEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_east);
-		map = new Map(Bitmap.createScaledBitmap(wallBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(orangeWestPortalBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(orangeEastPortalBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(blueWestPortalBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(blueEastPortalBitmap, 20, 20, true),
-				gameMode);
+		
 		
 		thread = new MainThread(getHolder(), this);
 		
@@ -238,6 +243,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int sleepTime = 300 - level*50;
 		try {
 			MainThread.sleep(sleepTime);
+			//MainThread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -251,13 +257,36 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void checkAndHandleCollisions() {
 		
 		Apple obstacle = apples.get(0);
-		if(gameMode.equals("walls") || gameMode.equals("portals"))
+		if(gameMode.equals("walls") || gameMode.equals("portals")){
 			if (ColisionDetector.isCollisionWalls(snake, map, gameMode)) {
 				this.gameOver = true;
 				vibrator.vibrate(500);		
 				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 				thread.setRunning(false);
 			}
+		}
+		if(gameMode.equals("portals")){
+			ListIterator<SnakePiece> it = snake.getSnakeBody().listIterator();
+			while(it.hasNext()){
+				SnakePiece s = it.next();
+				if(ColisionDetector.isCollision(s, map.getBluePortal())){
+					if(map.getBluePortal().getDirection() == Portal.WEST){
+						if(snake.getDir() == Snake.EAST){
+							s.setXPos(map.getOrangePortal().getXPos());
+							s.setYPos(map.getOrangePortal().getYPos());
+						}
+					}
+				}
+				if(ColisionDetector.isCollision(s, map.getOrangePortal())){
+					if(map.getOrangePortal().getDirection() == Portal.EAST){
+						if(snake.getDir() == Snake.WEST){
+							s.setXPos(map.getBluePortal().getXPos());
+							s.setYPos(map.getBluePortal().getYPos());
+						}
+					}
+				}
+			}
+		}
 		if (ColisionDetector.isCollision(snake, obstacle)) {
 			this.incrementScore();
 			if(vibrate) vibrator.vibrate(500);

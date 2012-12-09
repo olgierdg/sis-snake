@@ -11,19 +11,17 @@ import android.graphics.Canvas;
  */
 public class Apple {
 
-	protected int xPos;
-	protected int yPos;
+	private Coordinates coords;
 	protected Bitmap bitmap;
 	protected boolean isTouched = false;
 
 	public Apple(Bitmap bitmap, int xPos, int yPos) {
 		this.bitmap = bitmap;
-		this.xPos = xPos;
-		this.yPos = yPos;
+		coords = new Coordinates(xPos, yPos);
 	}
 
 	public void draw(Canvas canvas) {
-		canvas.drawBitmap(bitmap, xPos, yPos, null);
+		canvas.drawBitmap(bitmap, coords.getXPos(), coords.getYPos(), null);
 	}
 
 	public void setIsTouched(boolean b) {
@@ -36,18 +34,18 @@ public class Apple {
 	}
 	
 	public int getXPos(){
-		return xPos;
+		return coords.getXPos();
 	}
 	
 	public void setXPos(int x){
-		xPos = x;
+		coords.setXPos(x);
 	}
 	
 	public int getYPos(){
-		return xPos;
+		return coords.getYPos();
 	}
 	
 	public void setYPos(int y){
-		yPos = y;
+		coords.setYPos(y);
 	}
 }

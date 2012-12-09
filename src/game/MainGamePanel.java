@@ -161,29 +161,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			int appleX;
 			do{
 				appleX = generator.nextInt(i)*20;
-				for(SnakePiece s : snake.getSnakeBody()){
-					if(appleX == s.getXPos()){
-						appleX = 13;
-						break;
-					}
-				}
 			}while(appleX % 20 != 0);
 			apple.setXPos(appleX);
 			
 			int appleY;
 			do{
 				appleY = generator.nextInt(j)*20;
-				for(SnakePiece s : snake.getSnakeBody()){
-					if(appleY == s.getYPos()){
-						appleY = 13;
-						break;
-					}
-				}
 				if(appleY < 40) appleY = 43;
 			}while(appleY % 20 != 0);
-			apple.setYPos(appleY);
-			
-		}while(ColisionDetector.isCollision(apple, map));
+			apple.setYPos(appleY);		
+		}while(ColisionDetector.isCollision(apple, map, snake));
+		
 		apples.add(apple);		
 	}
 

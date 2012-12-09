@@ -171,10 +171,13 @@ public class Snake {
 	 */
 	public void draw(Canvas canvas) {
 		for(int i = 0; i<snakeBody.size(); i++){
-			if(!ColisionDetector.isCollision(snakeBody.get(i), map.getBluePortal()) && !ColisionDetector.isCollision(snakeBody.get(i), map.getOrangePortal())){
-				Rect destRect = new Rect(snakeBody.get(i).getXPos(), snakeBody.get(i).getYPos(), snakeBody.get(i).getXPos() + spriteWidth, snakeBody.get(i).getYPos() + spriteHeight);
-				if(i == 0){
-					if(this.mDirection == EAST)
+			if(gameMode.equals("portals")){
+				if(ColisionDetector.isCollision(snakeBody.get(i), map.getBluePortal()) || ColisionDetector.isCollision(snakeBody.get(i), map.getOrangePortal()))
+					continue;
+			}
+			Rect destRect = new Rect(snakeBody.get(i).getXPos(), snakeBody.get(i).getYPos(), snakeBody.get(i).getXPos() + spriteWidth, snakeBody.get(i).getYPos() + spriteHeight);
+			if(i == 0){
+				if(this.mDirection == EAST)
 						canvas.drawBitmap(snakeHeadEastBitmap, sourceRect, destRect, null);
 					if(this.mDirection == WEST)
 						canvas.drawBitmap(snakeHeadWestBitmap, sourceRect, destRect, null);
@@ -198,9 +201,7 @@ public class Snake {
 							canvas.drawBitmap(snakeTailEastBitmap, sourceRect, destRect, null);					
 				}
 				else canvas.drawBitmap(snakeBodyBitmap, sourceRect, destRect, null);
-			}
 		}
-		
 		//boundingRect = destRect;
 	}
 

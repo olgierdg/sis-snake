@@ -1,6 +1,5 @@
 package model;
 
-import game.Coordinates;
 
 public class SnakePiece {
 
@@ -11,8 +10,8 @@ public class SnakePiece {
 	}
 	
 	public SnakePiece(SnakePiece s){
-		this.coords.setX(s.getXPos());
-		this.coords.setY(s.getYPos());
+		this.coords.setXPos(s.getXPos());
+		this.coords.setYPos(s.getYPos());
 	}
 	
 	public int getXPos(){
@@ -24,10 +23,10 @@ public class SnakePiece {
 	}
 	
 	public void setXPos(int x){
-		this.coords.setX(x);
+		this.coords.setXPos(x);
 	}
 	
 	public void setYPos(int y){
-		this.coords.setY(y);
+		this.coords.setYPos(y);
 	}
 }

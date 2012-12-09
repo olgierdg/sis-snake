@@ -1,4 +1,4 @@
-package game;
+package model;
 
 public class Coordinates {
 
@@ -6,15 +6,15 @@ public class Coordinates {
 	private int y;
 	
 	public Coordinates(int x, int y){
-		this.setX(x);
-		this.setY(y);
+		this.setXPos(x);
+		this.setYPos(y);
 	}
 
 	public int getXPos() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setXPos(int x) {
 		this.x = x;
 	}
 
@@ -22,7 +22,7 @@ public class Coordinates {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setYPos(int y) {
 		this.y = y;
 	}
 }

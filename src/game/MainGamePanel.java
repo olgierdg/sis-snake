@@ -90,11 +90,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				80, 80, gameMode);
 				
 		Bitmap wallBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wall);
-		Bitmap orangePortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange);
-		Bitmap bluePortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue);
+		Bitmap orangeWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_west);
+		Bitmap orangeEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_east);
+		Bitmap blueWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_west);
+		Bitmap blueEastPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_east);
 		map = new Map(Bitmap.createScaledBitmap(wallBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(orangePortalBitmap, 20, 20, true), 
-				Bitmap.createScaledBitmap(bluePortalBitmap, 20, 20, true));
+				Bitmap.createScaledBitmap(orangeWestPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(orangeEastPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(blueWestPortalBitmap, 20, 20, true), 
+				Bitmap.createScaledBitmap(blueEastPortalBitmap, 20, 20, true),
+				gameMode);
 		
 		thread = new MainThread(getHolder(), this);
 		
@@ -247,7 +252,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		Apple obstacle = apples.get(0);
 		if(gameMode.equals("walls") || gameMode.equals("portals"))
-			if (ColisionDetector.isCollisionWalls(snake, map)) {
+			if (ColisionDetector.isCollisionWalls(snake, map, gameMode)) {
 				this.gameOver = true;
 				vibrator.vibrate(500);		
 				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);

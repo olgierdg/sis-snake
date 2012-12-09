@@ -3,6 +3,9 @@ package game;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import model.Coordinates;
+import model.Portal;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -14,18 +17,31 @@ public class Map {
 	private int height;
 	
 	private Bitmap wallBitmap;
-	private Bitmap orangePortalBitmap;
-	private Bitmap bluePortalBitmap;
+	private Bitmap orangeWestPortalBitmap;
+	private Bitmap orangeEastPortalBitmap;
+	private Bitmap blueWestPortalBitmap;
+	private Bitmap blueEastPortalBitmap;
 	
 	Vector<Coordinates> level1;
+	private Portal bluePortal;
+	private Portal orangePortal;
 	private Rect sourceRect;
+	private String gameMode;
 	
 	public Map(Bitmap wallBitmap, 
-    		Bitmap orangePortalBitmap, 
-    		Bitmap bluePortalBitmap){
+    		Bitmap orangeWestPortalBitmap, 
+    		Bitmap orangeEastPortalBitmap,
+    		Bitmap blueWestPortalBitmap,
+    		Bitmap blueEastPortalBitmap,
+    		String gameMode){
+		
 		this.wallBitmap = wallBitmap;
-		this.bluePortalBitmap = bluePortalBitmap;
-		this.orangePortalBitmap = orangePortalBitmap;
+		this.orangeWestPortalBitmap = orangeWestPortalBitmap;
+		this.orangeEastPortalBitmap = orangeEastPortalBitmap;
+		this.blueWestPortalBitmap = blueWestPortalBitmap;
+		this.blueEastPortalBitmap = blueEastPortalBitmap;
+		
+		this.gameMode = gameMode;
 		
 		sourceRect = new Rect(0, 0, 20, 20);
 		level1 = new Vector<Coordinates>();
@@ -38,6 +54,18 @@ public class Map {
 	
 	public void generateLevel(){
 		generateWalls();
+		
+		int halfWidth;
+		int pWidth = width / 20;
+		int pHeight = height / 20;
+		halfWidth = pWidth/2;
+		Log.d("level1","siema generateLevel halfWidth : "+halfWidth);
+		for(int i = 2; i<pHeight-1; i++){
+			if(i!=11 && i!=18) level1.add(new Coordinates((halfWidth-1)*20,20*i));
+		}
+
+		bluePortal = new Portal((halfWidth-1)*20, 11*20, Portal.WEST);
+		orangePortal  = new Portal((halfWidth-1)*20, 18*20, Portal.EAST);
 	}
 	
 	public void generateWalls(){
@@ -78,7 +106,21 @@ public class Map {
 			canvas.drawBitmap(wallBitmap, sourceRect, destRect, null);
 		
 		}
-		//boundingRect = destRect;
+		if(gameMode.equals("portals")){
+			Rect destRect = null;
+			
+			destRect = new Rect(bluePortal.getXPos()-20, bluePortal.getYPos(), bluePortal.getXPos(), bluePortal.getYPos()+20);
+			canvas.drawBitmap(blueWestPortalBitmap, sourceRect, destRect, null);
+			
+			destRect = new Rect(bluePortal.getXPos(), bluePortal.getYPos(), bluePortal.getXPos()+20, bluePortal.getYPos()+20);
+			canvas.drawBitmap(wallBitmap, sourceRect, destRect, null);
+			
+			destRect = new Rect(orangePortal.getXPos()+20, orangePortal.getYPos(), orangePortal.getXPos()+40, orangePortal.getYPos()+20);
+			canvas.drawBitmap(orangeEastPortalBitmap, sourceRect, destRect, null);
+			
+			destRect = new Rect(orangePortal.getXPos(), orangePortal.getYPos(), orangePortal.getXPos()+20, orangePortal.getYPos()+20);
+			canvas.drawBitmap(wallBitmap, sourceRect, destRect, null);
+		}
 	}
 
 	public void setWidth(int width){
@@ -88,4 +130,22 @@ public class Map {
 	public void setHeight(int height){
 		this.height = height;
 	}
+
+	public Portal getBluePortal() {
+		return bluePortal;
+	}
+
+	public void setBluePortal(Portal bluePortal) {
+		this.bluePortal = bluePortal;
+	}
+
+	public Portal getOrangePortal() {
+		return orangePortal;
+	}
+
+	public void setOrangePortal(Portal orangePortal) {
+		this.orangePortal = orangePortal;
+	}
+	
+
 }

@@ -47,22 +47,17 @@ public class MainThread extends Thread {
 				canvas = this.surfaceHolder.lockCanvas();
 				synchronized (surfaceHolder) {
 					if(canvas != null){
-						//if(drawMap){
-						//	drawMap = false;
-						//	gamePanel.renderMap(canvas);
-						//}
-						if(gameOver){
+						if(running){
+							gamePanel.update();
 							gamePanel.render(canvas);
-							gameOver = false;
-							setRunning(false);
-						}else{					
-							if(running)
-								gamePanel.update();
-								gamePanel.render(canvas);
 						}
 					}
 				}
-				if (canvas != null) {
+				if (canvas != null && !gameOver) {
+					surfaceHolder.unlockCanvasAndPost(canvas);
+				}
+				if (canvas != null && gameOver) {
+					gamePanel.renderGameOver(canvas);
 					surfaceHolder.unlockCanvasAndPost(canvas);
 				}
 		}

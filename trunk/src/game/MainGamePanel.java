@@ -143,8 +143,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			try {
 				thread.join();
 				retry = false;
-			} catch (InterruptedException e) {
-			}
+			} catch (InterruptedException e) {}
 		}
 	}
 	
@@ -170,6 +169,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(appleY < 40) appleY = 43;
 			}while(appleY % 20 != 0);
 			apple.setYPos(appleY);		
+			
 		}while(ColisionDetector.isCollision(apple, map, snake));
 		
 		apples.add(apple);		
@@ -221,6 +221,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 	}
 
+	protected void renderGameOver(Canvas canvas) {
+		canvas.drawColor(Color.BLACK);
+		if(gameMode.equals("portals") || gameMode.equals("walls")) map.draw(canvas);
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		paint.setTextSize(40);
+		canvas.drawText("GAME", 100, 400, paint);
+		canvas.drawText("OVER", 100, 500, paint);
+
+	}
 
 	/**
 	 * Metoda aktualizuje stan gry - tworzy jablka (jak trzeba), sprawdza i obsluguje kolizje i aktualizuje weza.
@@ -235,8 +245,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		checkAndHandleCollisions();
+		
 		if(!gameOver) snake.updateSnake();
+		checkAndHandleCollisions();
 	}
 
 	/**
@@ -249,6 +260,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if (ColisionDetector.isCollisionWalls(snake, map, gameMode)) {
 				this.gameOver = true;
 				vibrator.vibrate(500);		
+				thread.setGameOver(true);
 				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 				thread.setRunning(false);
 			}
@@ -260,15 +272,17 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(ColisionDetector.isCollision(s, map.getBluePortal())){
 					if(map.getBluePortal().getDirection() == Portal.WEST){
 						if(snake.getDir() == Snake.EAST){
-							s.setXPos(map.getOrangePortal().getXPos());
-							s.setYPos(map.getOrangePortal().getYPos());
+							//s.setXPos(map.getOrangePortal().getXPos());
+							s.setXPos(map.getOrangePortal().getXPos()+20);
+							s.setYPos(map.getOrangePortal().getYPos());							
 						}
 					}
 				}
 				if(ColisionDetector.isCollision(s, map.getOrangePortal())){
 					if(map.getOrangePortal().getDirection() == Portal.EAST){
 						if(snake.getDir() == Snake.WEST){
-							s.setXPos(map.getBluePortal().getXPos());
+							//s.setXPos(map.getBluePortal().getXPos());
+							s.setXPos(map.getBluePortal().getXPos()-20);
 							s.setYPos(map.getBluePortal().getYPos());
 						}
 					}
@@ -360,11 +374,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		bundle.putInt("snakeBodySize", snake.getSnakeBody().size());
 
         for(int i = 0; i<snake.getSnakeBody().size(); i++){
-        	bundle.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());
-        	//Log.d("game.Snake", "snakeBodyPiece"+i+"X"+snake.getSnakeBody().get(i).getXPos());
-        	
+        	bundle.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());        	
         	bundle.putInt("snakeBodyPiece"+i+"Y", snake.getSnakeBody().get(i).getYPos());
-        	//Log.d("game.Snake", "snakeBodyPiece"+i+"Y"+snake.getSnakeBody().get(i).getYPos());
         }
         
         //zapis jablka

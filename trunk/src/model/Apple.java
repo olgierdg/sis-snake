@@ -28,7 +28,6 @@ public class Apple {
 		isTouched = b;
 	}
 	
-
 	public boolean getIsTouched() {
 		return isTouched;
 	}

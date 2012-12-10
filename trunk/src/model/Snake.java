@@ -172,8 +172,8 @@ public class Snake {
 	public void draw(Canvas canvas) {
 		for(int i = 0; i<snakeBody.size(); i++){
 			if(gameMode.equals("portals")){
-				if(ColisionDetector.isCollision(snakeBody.get(i), map.getBluePortal()) || ColisionDetector.isCollision(snakeBody.get(i), map.getOrangePortal()))
-					continue;
+				//if(ColisionDetector.isCollision(snakeBody.get(i), map.getBluePortal()) || ColisionDetector.isCollision(snakeBody.get(i), map.getOrangePortal()))
+				//	continue;
 			}
 			Rect destRect = new Rect(snakeBody.get(i).getXPos(), snakeBody.get(i).getYPos(), snakeBody.get(i).getXPos() + spriteWidth, snakeBody.get(i).getYPos() + spriteHeight);
 			if(i == 0){

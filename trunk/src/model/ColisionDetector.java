@@ -2,7 +2,6 @@ package model;
 
 import java.util.ListIterator;
 
-import android.util.Log;
 import game.Map;
 
 /**
@@ -52,6 +51,14 @@ public final class ColisionDetector {
 		return false;
 	}
 	
+	/**
+	 * Kolizja ze scianami
+	 * 
+	 * @param snake
+	 * @param map
+	 * @param gameMode
+	 * @return
+	 */
 	public static boolean isCollisionWalls(Snake snake, Map map, String gameMode){
 		SnakePiece head = snake.getHead();
 		int dir = snake.getDir();
@@ -63,57 +70,65 @@ public final class ColisionDetector {
 					if(map.getBluePortal().getDirection() == Portal.SOUTH){
 						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos()+20)) return false;
 						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos()+20)) return true;
-						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()+20)) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.NORTH) return true;
 					}else if(map.getOrangePortal().getDirection() == Portal.SOUTH){
 						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos()+20)) return false;
 						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos()+20)) return true;
-						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()+20)) return true;
-					}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()+20) && snake.getNextDir() == Snake.NORTH) return true;
-				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()+20) && snake.getNextDir() == Snake.NORTH) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.NORTH) return true;
+					}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.NORTH) return true;
+				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.NORTH) return true;
 			
 			if(dir == Snake.SOUTH)
 				if(gameMode.equals("portals")){
 					if(map.getBluePortal().getDirection() == Portal.NORTH){
 						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos()-20)) return false;
 						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos()-20)) return true;
-						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()-20)) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.SOUTH) return true;
 					}else if(map.getOrangePortal().getDirection() == Portal.NORTH){
 						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos()-20)) return false;
 						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos()-20)) return true;
-						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()-20)) return true;
-					}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()-20) && snake.getNextDir() == Snake.SOUTH) return true;
-				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()-20) && snake.getNextDir() == Snake.SOUTH) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.SOUTH) return true;
+					}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.SOUTH) return true;
+				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.SOUTH) return true;
 			
 			if(dir == Snake.EAST)
 				if(gameMode.equals("portals")){
 					if(map.getBluePortal().getDirection() == Portal.WEST){
-						if((head.getXPos() == map.getBluePortal().getXPos()-20) && (head.getYPos() == map.getBluePortal().getYPos())) return false;
-						if((head.getXPos() == map.getOrangePortal().getXPos()-20) && (head.getYPos() == map.getOrangePortal().getYPos())) return true;
-						if((head.getXPos() == c.getXPos()-20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
+						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos())) return false;
+						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos())) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
 					}else if(map.getOrangePortal().getDirection() == Portal.WEST){
-						if((head.getXPos() == map.getOrangePortal().getXPos()-20) && (head.getYPos() == map.getOrangePortal().getYPos())) return false;
-						if((head.getXPos() == map.getBluePortal().getXPos()-20) && (head.getYPos() == map.getBluePortal().getYPos())) return true;
-						if((head.getXPos() == c.getXPos()-20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
-					}else if((head.getXPos() == c.getXPos()-20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;				
-				}else if((head.getXPos() == c.getXPos()-20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
+						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos())) return false;
+						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos())) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
+					}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;				
+				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.EAST) return true;
 			
 			if(dir == Snake.WEST)
 				if(gameMode.equals("portals")){
 					if(map.getOrangePortal().getDirection() == Portal.EAST){
-						if((head.getXPos() == map.getOrangePortal().getXPos()+20) && (head.getYPos() == map.getOrangePortal().getYPos())) return false;
-						if((head.getXPos() == map.getBluePortal().getXPos()+20) && (head.getYPos() == map.getBluePortal().getYPos())) return true;
-						if((head.getXPos() == c.getXPos()+20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
+						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos())) return false;
+						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos())) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
 					}else if(map.getBluePortal().getDirection() == Portal.EAST){
-						if((head.getXPos() == map.getBluePortal().getXPos()+20) && (head.getYPos() == map.getBluePortal().getYPos())) return false;
-						if((head.getXPos() == map.getOrangePortal().getXPos()+20) && (head.getYPos() == map.getOrangePortal().getYPos())) return true;
-						if((head.getXPos() == c.getXPos()+20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
-					} else if((head.getXPos() == c.getXPos()+20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;			
-				}else if((head.getXPos() == c.getXPos()+20) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
+						if((head.getXPos() == map.getBluePortal().getXPos()) && (head.getYPos() == map.getBluePortal().getYPos())) return false;
+						if((head.getXPos() == map.getOrangePortal().getXPos()) && (head.getYPos() == map.getOrangePortal().getYPos())) return true;
+						if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
+					} else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;			
+				}else if((head.getXPos() == c.getXPos()) && (head.getYPos() == c.getYPos()) && snake.getNextDir() == Snake.WEST) return true;
 		}
 		
 		return false;
 	}
 	
+	/**
+	 * Kolizja tworzonego jablka z wezem i scianami.
+	 * 
+	 * @param apple
+	 * @param map
+	 * @param snake
+	 * @return
+	 */
 	public static boolean isCollision(Apple apple, Map map, Snake snake){
 		ListIterator<Coordinates> it = map.getLevel().listIterator();
 		while(it.hasNext()){
@@ -128,12 +143,15 @@ public final class ColisionDetector {
 		return false;
 	}
 	
+	/**
+	 * Kolizja poszczegolnej czesci weza z portalem.
+	 * 
+	 * @param piece
+	 * @param portal
+	 * @return
+	 */
 	public static boolean isCollision(SnakePiece piece, Portal portal){
 		if(piece.getXPos() == portal.getXPos() && piece.getYPos() == portal.getYPos()) return true;	
 		return false;
 	}
-	
-	//public static boolean isCollisionPortals(Snake snake, Map map){
-		
-	//}
 }

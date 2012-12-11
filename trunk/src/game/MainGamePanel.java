@@ -90,7 +90,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		Bitmap snakeBodyBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tulow);
 		Bitmap snakeTailEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_east);
 		Bitmap snakeTailWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_west);
-		Bitmap snakeTailNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_north);
+		Bitmap snakeTailNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon42);
 		Bitmap snakeTailSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_south);
 		
 		snake = new Snake(Bitmap.createScaledBitmap(snakeHeadEastBitmap, 20, 20, true),
@@ -100,9 +100,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				Bitmap.createScaledBitmap(snakeBodyBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailEastBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
-				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 20, 20, true),
+				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 80, 20, true),
 				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
-				4,6,															//TOMEK
+				4,6,4,															//TOMEK
 				80, 80, gameMode, map);
 				
 		

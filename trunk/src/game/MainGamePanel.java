@@ -83,25 +83,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				gameMode);
 		
 		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
-		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_east);
-		Bitmap snakeHeadWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_west);
-		Bitmap snakeHeadNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snake62);
-		Bitmap snakeHeadSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_south);
+		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_sprite_east);
+		Bitmap snakeHeadWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_sprite_west);
+		Bitmap snakeHeadNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_sprite_north);
+		Bitmap snakeHeadSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_sprite_south);
 		Bitmap snakeBodyBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tulow);
-		Bitmap snakeTailEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_east);
-		Bitmap snakeTailWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_west);
-		Bitmap snakeTailNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon42);
-		Bitmap snakeTailSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_south);
+		Bitmap snakeTailEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_sprite_east);
+		Bitmap snakeTailWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_sprite_west);
+		Bitmap snakeTailNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_sprite_north);
+		Bitmap snakeTailSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_sprite_south);
 		
-		snake = new Snake(Bitmap.createScaledBitmap(snakeHeadEastBitmap, 20, 20, true),
-				Bitmap.createScaledBitmap(snakeHeadWestBitmap, 20, 20, true),
+		snake = new Snake(Bitmap.createScaledBitmap(snakeHeadEastBitmap, 120, 20, true),
+				Bitmap.createScaledBitmap(snakeHeadWestBitmap, 120, 20, true),
 				Bitmap.createScaledBitmap(snakeHeadNorthBitmap, 120, 20, true),
-				Bitmap.createScaledBitmap(snakeHeadSouthBitmap, 20, 20, true),
+				Bitmap.createScaledBitmap(snakeHeadSouthBitmap, 120, 20, true),
 				Bitmap.createScaledBitmap(snakeBodyBitmap, 20, 20, true),
-				Bitmap.createScaledBitmap(snakeTailEastBitmap, 20, 20, true),
-				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
+				Bitmap.createScaledBitmap(snakeTailEastBitmap, 80, 20, true),
+				Bitmap.createScaledBitmap(snakeTailWestBitmap, 80, 20, true),
 				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 80, 20, true),
-				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
+				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 80, 20, true),
 				4,6,4,															//TOMEK
 				80, 80, gameMode, map);
 				

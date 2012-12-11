@@ -189,13 +189,13 @@ public class Snake {
 			Rect destRect = new Rect(snakeBody.get(i).getXPos(), snakeBody.get(i).getYPos(), snakeBody.get(i).getXPos() + spriteWidth, snakeBody.get(i).getYPos() + spriteHeight);
 			if(i == 0){
 				if(this.mDirection == EAST)
-						canvas.drawBitmap(snakeHeadEastBitmap, sourceRect, destRect, null);
+						canvas.drawBitmap(snakeHeadEastBitmap, sourceRectHead, destRect, null);
 					if(this.mDirection == WEST)
-						canvas.drawBitmap(snakeHeadWestBitmap, sourceRect, destRect, null);
+						canvas.drawBitmap(snakeHeadWestBitmap, sourceRectHead, destRect, null);
 					if(this.mDirection == NORTH)
 						canvas.drawBitmap(snakeHeadNorthBitmap, sourceRectHead, destRect, null);
 					if(this.mDirection == SOUTH)
-						canvas.drawBitmap(snakeHeadSouthBitmap, sourceRect, destRect, null);
+						canvas.drawBitmap(snakeHeadSouthBitmap, sourceRectHead, destRect, null);
 				}
 				else if (i == snakeBody.size()-1){
 				
@@ -203,13 +203,13 @@ public class Snake {
 						if(snakeBody.get(snakeBody.size()-1).getYPos() > snakeBody.get(snakeBody.size()-2).getYPos())
 							canvas.drawBitmap(snakeTailNorthBitmap, sourceRectTail, destRect, null);
 						else
-							canvas.drawBitmap(snakeTailSouthBitmap, sourceRect, destRect, null);
+							canvas.drawBitmap(snakeTailSouthBitmap, sourceRectTail, destRect, null);
 					
 					if(snakeBody.get(snakeBody.size()-1).getYPos() == snakeBody.get(snakeBody.size()-2).getYPos())
 						if(snakeBody.get(snakeBody.size()-1).getXPos() > snakeBody.get(snakeBody.size()-2).getXPos())
-							canvas.drawBitmap(snakeTailWestBitmap, sourceRect, destRect, null);
+							canvas.drawBitmap(snakeTailWestBitmap, sourceRectTail, destRect, null);
 						else
-							canvas.drawBitmap(snakeTailEastBitmap, sourceRect, destRect, null);					
+							canvas.drawBitmap(snakeTailEastBitmap, sourceRectTail, destRect, null);					
 				}
 				else canvas.drawBitmap(snakeBodyBitmap, sourceRect, destRect, null);
 		}

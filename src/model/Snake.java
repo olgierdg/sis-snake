@@ -16,13 +16,16 @@ import android.graphics.Rect;
  */
 public class Snake {
 
-	private Rect sourceRectH;			//TOMEK
+	private Rect sourceRectHead;			//TOMEK
+	private Rect sourceRectTail;			//TOMEK
 	private Rect sourceRect; // the rectangle to be drawn from the animation
 								// bitmap
 	
 	/*TOMEK*/
-	private int frameNr; // number of frames in animation
-	private int currentFrame = 0; // the current frame
+	private int frameNrHead; // number of frames in animation
+	private int frameNrTail;
+	private int currentFrameHead = 0; // the current frame
+	private int currentFrameTail = 0;
 	private long frameTicker; // the time of the last frame update
 	private int framePeriod; // milliseconds between each frame (1000/fps)
 	/*TOMEK*/
@@ -73,7 +76,8 @@ public class Snake {
     		Bitmap tailNorthBitmap,
     		Bitmap tailSouthBitmap,
     		int fps,											//TOMEK
-    		int frameCount,										//TOMEK
+    		int frameCountHead,										//TOMEK
+    		int frameCountTail,	
     		int xPos, int yPos, String gameMode, Map map) {
     	
 		this.snakeHeadEastBitmap = headEastBitmap;
@@ -95,7 +99,8 @@ public class Snake {
 		this.snakeBody = new ArrayList<SnakePiece>();
 		this.snakeBody.add(new SnakePiece(xPos, yPos));
 		
-		this.frameNr = frameCount; 							//TOMEK
+		this.frameNrHead = frameCountHead; 							//TOMEK
+		this.frameNrTail = frameCountTail;							//TOMEK
 		//spriteWidth = bitmap.getWidth() / frameCount;  	
 		
 		this.spriteWidth = snakeBodyBitmap.getWidth();
@@ -105,7 +110,8 @@ public class Snake {
 		//spriteHeight = 20;
 		
 		this.sourceRect = new Rect(0, 0, spriteWidth, spriteHeight);
-		this.sourceRectH = new Rect(0, 0, spriteWidth, spriteHeight);	//TOMEK
+		this.sourceRectHead = new Rect(0, 0, spriteWidth, spriteHeight);	//TOMEK
+		this.sourceRectTail = new Rect(0, 0, spriteWidth, spriteHeight);	//TOMEK
 		this.framePeriod = 1000 / fps;									//TOMEK
 		this.frameTicker = 0l;											//TOMEK
 		this.growSnake = true;
@@ -187,7 +193,7 @@ public class Snake {
 					if(this.mDirection == WEST)
 						canvas.drawBitmap(snakeHeadWestBitmap, sourceRect, destRect, null);
 					if(this.mDirection == NORTH)
-						canvas.drawBitmap(snakeHeadNorthBitmap, sourceRectH, destRect, null);
+						canvas.drawBitmap(snakeHeadNorthBitmap, sourceRectHead, destRect, null);
 					if(this.mDirection == SOUTH)
 						canvas.drawBitmap(snakeHeadSouthBitmap, sourceRect, destRect, null);
 				}
@@ -195,7 +201,7 @@ public class Snake {
 				
 					if(snakeBody.get(snakeBody.size()-1).getXPos() == snakeBody.get(snakeBody.size()-2).getXPos())
 						if(snakeBody.get(snakeBody.size()-1).getYPos() > snakeBody.get(snakeBody.size()-2).getYPos())
-							canvas.drawBitmap(snakeTailNorthBitmap, sourceRect, destRect, null);
+							canvas.drawBitmap(snakeTailNorthBitmap, sourceRectTail, destRect, null);
 						else
 							canvas.drawBitmap(snakeTailSouthBitmap, sourceRect, destRect, null);
 					
@@ -269,14 +275,22 @@ public class Snake {
 		if (gameTime > frameTicker + framePeriod) {
 			frameTicker = gameTime;
 			// increment the frame
-			currentFrame++;
-			if (currentFrame >= frameNr) {
-				currentFrame = 0;
+			currentFrameHead++;
+			if (currentFrameHead >= frameNrHead) {
+				currentFrameHead = 0;
+			}
+			
+			currentFrameTail++;
+			if (currentFrameTail >= frameNrTail) {
+				currentFrameTail = 0;
 			}
 		}
 		// define the rectangle to cut out sprite
-		sourceRectH.left = currentFrame * spriteWidth;
-		sourceRectH.right = sourceRectH.left + spriteWidth;
+		sourceRectHead.left = currentFrameHead * spriteWidth;
+		sourceRectHead.right = sourceRectHead.left + spriteWidth;
+		
+		sourceRectTail.left = currentFrameTail * spriteWidth;
+		sourceRectTail.right = sourceRectTail.left + spriteWidth;
 	}
 	/*TOMEK*/
 

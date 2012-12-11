@@ -85,7 +85,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		appleBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
 		Bitmap snakeHeadEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_east);
 		Bitmap snakeHeadWestBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_west);
-		Bitmap snakeHeadNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_north);
+		Bitmap snakeHeadNorthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.snake62);
 		Bitmap snakeHeadSouthBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.glowa_south);
 		Bitmap snakeBodyBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tulow);
 		Bitmap snakeTailEastBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ogon_east);
@@ -95,13 +95,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		snake = new Snake(Bitmap.createScaledBitmap(snakeHeadEastBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeHeadWestBitmap, 20, 20, true),
-				Bitmap.createScaledBitmap(snakeHeadNorthBitmap, 20, 20, true),
+				Bitmap.createScaledBitmap(snakeHeadNorthBitmap, 120, 20, true),
 				Bitmap.createScaledBitmap(snakeHeadSouthBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeBodyBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailEastBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
+				4,8,															//TOMEK
 				80, 80, gameMode, map);
 				
 		
@@ -246,7 +247,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			e.printStackTrace();
 		}
 		
-		if(!gameOver) snake.updateSnake();
+		if(!gameOver) snake.updateSnake(System.currentTimeMillis());   //TOMEK
 		checkAndHandleCollisions();
 	}
 

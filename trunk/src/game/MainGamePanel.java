@@ -102,7 +102,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				Bitmap.createScaledBitmap(snakeTailWestBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailNorthBitmap, 20, 20, true),
 				Bitmap.createScaledBitmap(snakeTailSouthBitmap, 20, 20, true),
-				4,8,															//TOMEK
+				4,6,															//TOMEK
 				80, 80, gameMode, map);
 				
 		

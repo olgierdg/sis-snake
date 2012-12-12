@@ -1,6 +1,7 @@
 package model;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 /**
  * Klasa jabluszka, how sweet. Nic sie tu nie dzieje, jak w moim zyciu osobistym.
@@ -8,23 +9,13 @@ import android.graphics.Bitmap;
  * @author Olo
  *
  */
-
-public class Apple extends Fruit {
-	public Apple(Bitmap bitmap, int xPos, int yPos) {
-		super(bitmap, xPos, yPos);
-	}
-}
-
-
-
-
-/*public class Apple {
+public class Fruit {
 
 	private Coordinates coords;
 	protected Bitmap bitmap;
 	protected boolean isTouched = false;
 
-	public Apple(Bitmap bitmap, int xPos, int yPos) {
+	public Fruit(Bitmap bitmap, int xPos, int yPos) {
 		this.bitmap = bitmap;
 		coords = new Coordinates(xPos, yPos);
 	}
@@ -56,4 +47,4 @@ public class Apple extends Fruit {
 	public void setYPos(int y){
 		coords.setYPos(y);
 	}
-}*/
+}

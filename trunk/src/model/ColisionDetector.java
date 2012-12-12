@@ -20,7 +20,7 @@ public final class ColisionDetector {
 	 * @param apple japko
 	 * @return true jesli kolizja, false jesli nie ma kolizji
 	 */
-	public static boolean isCollision(Snake snake, Apple apple) {
+	public static boolean isCollision(Snake snake, Fruit apple) {
 		SnakePiece head = snake.getHead();
 
 		if((head.getXPos() == apple.getXPos()) && (head.getYPos() == apple.getYPos())) return true;
@@ -28,7 +28,7 @@ public final class ColisionDetector {
 	}
 	
 	/**
-	 * Kolizja w wezem. Kolizja jest sprawdzana z wyprzedzeniem, zeby zatrzymac render w momencie gdy glowa weza 
+	 * Kolizja z wezem. Kolizja jest sprawdzana z wyprzedzeniem, zeby zatrzymac render w momencie gdy glowa weza 
 	 * dotyka jakiejs jego czesci, a nie w momencie gdy zajmuje ta sama przestrzen co ta czesc.
 	 * 
 	 * @param snake wonz
@@ -129,7 +129,7 @@ public final class ColisionDetector {
 	 * @param snake
 	 * @return
 	 */
-	public static boolean isCollision(Apple apple, Map map, Snake snake){
+	public static boolean isCollision(Fruit apple, Map map, Snake snake){
 		ListIterator<Coordinates> it = map.getLevel().listIterator();
 		while(it.hasNext()){
 			Coordinates c = it.next();

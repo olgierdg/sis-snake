@@ -16,7 +16,7 @@ public class MainThread extends Thread {
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
 		gameOver = false;
-		drawMap = false;
+		//drawMap = false;
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}

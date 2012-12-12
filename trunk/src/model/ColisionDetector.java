@@ -14,16 +14,16 @@ import game.Map;
 public final class ColisionDetector {
 
 	/**
-	 * Kolizja z jablkiem
+	 * Kolizja z owocem
 	 * 
 	 * @param snake wonz
-	 * @param apple japko
+	 * @param fruit owoc
 	 * @return true jesli kolizja, false jesli nie ma kolizji
 	 */
-	public static boolean isCollision(Snake snake, Fruit apple) {
+	public static boolean isCollision(Snake snake, Fruit fruit) {
 		SnakePiece head = snake.getHead();
 
-		if((head.getXPos() == apple.getXPos()) && (head.getYPos() == apple.getYPos())) return true;
+		if((head.getXPos() == fruit.getXPos()) && (head.getYPos() == fruit.getYPos())) return true;
 		return false;
 	}
 	
@@ -124,24 +124,40 @@ public final class ColisionDetector {
 	/**
 	 * Kolizja tworzonego jablka z wezem i scianami.
 	 * 
-	 * @param apple
+	 * @param fruit
 	 * @param map
 	 * @param snake
 	 * @return
 	 */
-	public static boolean isCollision(Fruit apple, Map map, Snake snake){
+	public static boolean isCollision(Fruit fruit, Map map, Snake snake){
 		ListIterator<Coordinates> it = map.getLevel().listIterator();
 		while(it.hasNext()){
 			Coordinates c = it.next();
-			if((c.getXPos() == apple.getXPos()) && (c.getYPos() == apple.getYPos())) return true;
+			if((c.getXPos() == fruit.getXPos()) && (c.getYPos() == fruit.getYPos())) return true;
 		}
 		ListIterator<SnakePiece> its = snake.getSnakeBody().listIterator();
 		while(its.hasNext()){
 			SnakePiece s = its.next();
-			if((s.getXPos() == apple.getXPos()) && (s.getYPos() == apple.getYPos())) return true;
+			if((s.getXPos() == fruit.getXPos()) && (s.getYPos() == fruit.getYPos())) return true;
 		}
 		return false;
 	}
+	
+	/**
+	 * TOMEK
+	 * 
+	 * Kolizja tworzonego owocu z innym istniejacym owocem 
+	 * 
+	 * @param fruit1
+	 * @param fruit2
+	 * @return
+	 */
+	public static boolean isCollision(Fruit fruit1, Fruit fruit2) {
+		
+		if((fruit1.getXPos() == fruit2.getXPos()) && (fruit1.getYPos() == fruit2.getYPos())) return true;
+		return false;	
+	}
+	
 	
 	/**
 	 * Kolizja poszczegolnej czesci weza z portalem.

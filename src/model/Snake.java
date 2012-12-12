@@ -60,6 +60,7 @@ public class Snake {
     public ArrayList<SnakePiece> snakeBody;
     
     boolean growSnake;
+    boolean decreaseSnake;
     boolean dirChange;
     int changeCount;
     String gameMode;
@@ -115,6 +116,7 @@ public class Snake {
 		this.framePeriod = 1000 / fps;									//TOMEK
 		this.frameTicker = 0l;											//TOMEK
 		this.growSnake = true;
+		this.decreaseSnake = false;										//TOMEK
 		//this.dirChange = false;
 		//this.changeCount = 0;
 	}
@@ -138,6 +140,15 @@ public class Snake {
 	public void setGrowSnake(boolean grow){
 		this.growSnake = grow;
 	}
+	
+	
+	/**
+	 * TOMEK
+	 */
+	public void setDecreaseSnake(boolean decrease) {
+		this.decreaseSnake = decrease;
+	}
+	
 	
 	/**
 	 * Obsluga akcji jaka jest ruch paluchem po ekranie. Jak widac licze delte, jak w szkole, prawie. 
@@ -262,10 +273,16 @@ public class Snake {
 
         snakeBody.add(0, newHead);
 
-        if (!growSnake) {
+        if(!growSnake) {
         	snakeBody.remove(snakeBody.size() - 1);
         }
         growSnake = false;
+        
+        //TOMEK
+        if(decreaseSnake && snakeBody.size() > 2) {
+        	snakeBody.remove(snakeBody.size() - 1);
+        }
+        decreaseSnake = false;
         
         calculateSourceRect(gameTime);		//TOMEK
     }

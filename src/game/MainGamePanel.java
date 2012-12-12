@@ -7,13 +7,12 @@ import java.util.Vector;
 
 import model.Apple;
 import model.ColisionDetector;
-import model.Coordinates;
-import model.Fruit;
 import model.OtherFruit;
 import model.Portal;
 import model.Snake;
 import model.SnakePiece;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,21 +35,21 @@ import com.example.game.R;
  * @author Olo
  *
  */
+@SuppressLint("ViewConstructor")
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback{
 
 	private static Random generator = new Random();
 	private MainThread thread;
 	private Snake snake;
-	private Vector<Apple> apples = new Vector<Apple>();
+	private Vector<Apple> apples;
 	private Bitmap appleBitmap;
 	
 	//TOMEK
-	//private Bitmap pearBitmap;
-	//private Bitmap cherriesBitmap;
-	//private Bitmap watermelonBitmap;
-	private Vector<OtherFruit> otherFruits = new Vector<OtherFruit>(); 
-	private Vector<Bitmap> otherFruitsBitmaps = new Vector<Bitmap>();
+	private Vector<OtherFruit> otherFruits; 
+	private Vector<Bitmap> otherFruitsBitmaps;
 	private long ticker;
+	private long ticker2;
+	private int slower;
 	//TOMEK
 
 	private Vibrator vibrator;
@@ -80,6 +79,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.level = 1;
 		this.gameOver = false;
 		this.gameMode = gameMode;
+		this.otherFruits = new Vector<OtherFruit>();
+		this.otherFruitsBitmaps = new Vector<Bitmap>();
+		this.apples = new Vector<Apple>();
 		
 		Bitmap wallBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wall);
 		Bitmap orangeWestPortalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.orange_west);
@@ -129,6 +131,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				
 		
 		this.ticker = 0l;		//TOMEK
+		this.ticker2 = System.currentTimeMillis() + 1000*(10 + generator.nextInt(6)) + level*1000;		//TOMEK
+		this.slower = 0;		//TOMEK
 		thread = new MainThread(getHolder(), this);
 		
 	}
@@ -177,6 +181,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private void createApple() {
 		int i = getWidth()/20;
 		int j = getHeight()/20;
+		boolean iscollision = false;
 		
 		Apple apple = new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), 0, 0);
 		do{
@@ -191,9 +196,26 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				appleY = generator.nextInt(j)*20;
 				if(appleY < 40) appleY = 43;
 			}while(appleY % 20 != 0);
-			apple.setYPos(appleY);		
+			apple.setYPos(appleY);	
 			
-		}while(ColisionDetector.isCollision(apple, map, snake));
+			//sprawdzana kolizja z wezem i scianami
+			if(ColisionDetector.isCollision(apple, map, snake)) iscollision = true;		
+			
+			//sprawdzana kolizja z innymi jablkami
+			if(!apples.isEmpty()) {	
+				for(Apple oapple : apples)
+					if(ColisionDetector.isCollision(apple, oapple))						
+						iscollision = true;
+			}
+			
+			//sprawdzana kolizja z innymi owocami
+			if(!otherFruits.isEmpty()) {
+				for(OtherFruit ofruit : otherFruits)
+					if(ColisionDetector.isCollision(apple, ofruit))		
+						iscollision = true;
+			}
+			
+		}while(iscollision);
 		
 		apples.add(apple);		
 	}
@@ -201,11 +223,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	/**
 	 * TOMEK
+	 * 
+	 * Metoda tworzy nowy owoc (bonus)
 	 */
 	private void createOtherFruit() {
 		int i = getWidth()/20;
 		int j = getHeight()/20;
 		int n = generator.nextInt(3);
+		boolean collision  = false;
 		
 		OtherFruit fruit = new OtherFruit(otherFruitsBitmaps.get(n), 0, 0, n+1);
 		do{
@@ -222,11 +247,33 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}while(fruitY % 20 != 0);
 			fruit.setYPos(fruitY);		
 			
-		}while(ColisionDetector.isCollision(fruit, map, snake));
+			//sprawdzana kolizja z wezem i scianami
+			if(ColisionDetector.isCollision(fruit, map, snake)) collision = true;		
+			
+			//sprawdzana kolizja z innymi jablkami
+			if(!apples.isEmpty()) {
+				for(Apple apple : apples)
+					if(ColisionDetector.isCollision(fruit, apple))						
+						collision = true;
+			}
+			
+			//sprawdzana kolizja z innymi owocami
+			if(!otherFruits.isEmpty()) {
+				for(OtherFruit ofruit : otherFruits)
+					if(ColisionDetector.isCollision(fruit, ofruit))						
+						collision = true;
+			}
+			
+		}while(collision);
 		
 		otherFruits.add(fruit);		
 	}
 	
+	/**
+	 * TOMEK
+	 * 
+	 * Metoda usuwa owoc (bonus)
+	 */
 	private void removeOtherFruit() {
 		otherFruits.remove(0);
 	}
@@ -300,8 +347,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void update() {
 		
 		if(apples.isEmpty()) createApple();
-		//if(otherFruits.isEmpty()) createOtherFruit();	//TOMEK
-		int sleepTime = 300 - level*50;
+		
+		int sleepTime = 300 - level*50 + slower*300;
 		try {
 			MainThread.sleep(sleepTime);
 			//MainThread.sleep(1000);
@@ -315,36 +362,43 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 	
 	
-	/*TOMEK*/
+	/**
+	 * TOMEK
+	 * 
+	 * Metoda przelicza rozne czasy zwiazane z bonusami
+	 */
 	private void calculateBonus() {
 		long gameTime = System.currentTimeMillis();
+		long time = 0l;
+		
 		if(otherFruits.isEmpty()) {
-			long time = this.ticker + 1000*(7 + generator.nextInt(7)) + level*500;
-			if(gameTime > time) {
+			if(gameTime > this.ticker2) {
 				this.ticker = gameTime;
 				this.createOtherFruit();
 			}
 		}
-		
 		else {
-			long time = this.ticker + 10000 - level*1000;
+			time = this.ticker + 10000 - level*1000;
 			if(gameTime >  time) {
-				this.ticker = gameTime;
+				this.ticker2 = gameTime + 1000*(10 + generator.nextInt(6)) + level*1000;
 				this.removeOtherFruit();
 			}
 		}
+		
+		if(this.slower == 1) {
+			time = this.ticker + 15000l;
+			if(gameTime >  time)
+				this.slower = 0;	
+		}
 	}
-	/*TOMEK*/
 	
 	
-	
-
 	/**
 	 * Metoda sprawdza i obsluguje kolizje - co innego jesli kolizja z jablkiem a co innego jesli z samym soba.
 	 */
 	public void checkAndHandleCollisions() {
 		
-		//Apple obstacle = apples.get(0);
+		
 		if(gameMode.equals("walls") || gameMode.equals("portals")){
 			if (ColisionDetector.isCollisionWalls(snake, map, gameMode)) {
 				this.gameOver = true;
@@ -379,26 +433,39 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 		
-		Apple apple = apples.get(0);		//TOMEK
-		if (ColisionDetector.isCollision(snake, apple)) {
-			this.incrementScore(0);
-			if(vibrate) vibrator.vibrate(500);
-			apples.remove(apple);
-			snake.setGrowSnake(true);
-			render(thread.getCanvas());
+		for(Apple apple : apples) {
+			if (ColisionDetector.isCollision(snake, apple)) {
+				this.incrementScore(1);
+				if(vibrate) vibrator.vibrate(500);
+				apples.remove(apple);
+				snake.setGrowSnake(true);
+				render(thread.getCanvas());
+			}
 		}
 		
 		//TOMEK
 		if(!otherFruits.isEmpty()) {
-			OtherFruit fruit = otherFruits.get(0);		
-			
-			if (ColisionDetector.isCollision(snake, fruit)) {
-				this.incrementScore(fruit.bonus);
-				this.ticker = System.currentTimeMillis();
-				if(vibrate) vibrator.vibrate(500);
-				otherFruits.remove(fruit);
-				snake.setGrowSnake(true);
-				render(thread.getCanvas());
+			for(OtherFruit fruit : otherFruits) {		
+				if(ColisionDetector.isCollision(snake, fruit)) {
+					this.incrementScore(2);
+					switch(fruit.bonus) {
+						case 1 : createApple();
+								 snake.setGrowSnake(true);
+								 break;
+						
+						case 2 : snake.setDecreaseSnake(true);
+								 break;
+						
+						case 3 : slower = 1;
+								 snake.setGrowSnake(true);		
+								 break;
+					}
+					
+					ticker = System.currentTimeMillis();
+					if(vibrate) vibrator.vibrate(500);
+					otherFruits.remove(fruit);
+					render(thread.getCanvas());
+				}
 			}
 		}
 		//TOMEK
@@ -578,7 +645,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 	
 	public void incrementScore(int n){
-		score = score + 10 + n*5;
+		score += n*10;
 		if(score >= level*100) level++;
 	}
 	

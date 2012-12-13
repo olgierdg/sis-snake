@@ -46,23 +46,29 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 	
 	public void render(Canvas canvas){
 		java.util.Map<String, Integer> map = (Map<String, Integer>) settings.getAll();
-		
+		int count = map.size();
 		SortedSet<Integer> vals = new TreeSet<Integer>(map.values());
-		int i = 0;
+		Integer[] arr = new Integer[count];
+		vals.toArray(arr);
 
-		canvas.drawColor(Color.BLACK);
+		canvas.drawColor(Color.rgb(0, 94, 0));
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 
 		paint.setTextSize(22);
 		canvas.drawText("Highscores: ", 30, 25, paint);
 		
-		
-		for (Integer val : vals) { 
-			i++;
-			canvas.drawText(i+" : "+val, 30, 25+25*i, paint);
+		int i = 0;
+		//vals.
+		//for (Integer val : vals) { 
+		//	i++;
+		//	canvas.drawText(i+" : "+val, 30, 25+25*i, paint);
 		   // do something
+		//}
+		while(i < count){
+			if(arr[count-1-i] != null) canvas.drawText(i+" : "+arr[count-1-i], 30, 25+25*i, paint);
+			i++;
+			if(i == 11) break;
 		}
-		
 	}
 }

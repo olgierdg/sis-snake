@@ -61,10 +61,10 @@ public class Map {
 		halfWidth = pWidth/2;
 		
 		for(int i = 2; i<pHeight-1; i++){
-			if(i!=23 && i!=15) level.add(new Coordinates((halfWidth-1)*20,20*i));
+			if(i!=22 && i!=15) level.add(new Coordinates((halfWidth-1)*20,20*i));
 		}
 
-		bluePortal = new Portal((halfWidth-1)*20, 23*20, Portal.WEST);
+		bluePortal = new Portal((halfWidth-1)*20, 22*20, Portal.WEST);
 		orangePortal  = new Portal((halfWidth-1)*20, 15*20, Portal.EAST);
 	}
 	

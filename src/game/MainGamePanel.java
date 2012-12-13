@@ -450,6 +450,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(!otherFruits.isEmpty()) {
 			for(OtherFruit fruit : otherFruits) {		
 				if(ColisionDetector.isCollision(snake, fruit)) {
+					activity.playSound(R.raw.apple_bite);
 					this.incrementScore(2);
 					switch(fruit.bonus) {
 						case 1 : createApple();

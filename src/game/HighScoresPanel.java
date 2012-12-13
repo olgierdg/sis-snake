@@ -46,7 +46,7 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 		Integer[] arr = new Integer[count];
 		vals.toArray(arr);
 
-		canvas.drawColor(Color.rgb(0, 94, 0));
+		canvas.drawColor(Color.BLACK);
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 

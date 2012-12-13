@@ -9,7 +9,6 @@ import model.Portal;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 public class Map {
 
@@ -22,7 +21,7 @@ public class Map {
 	private Bitmap blueWestPortalBitmap;
 	private Bitmap blueEastPortalBitmap;
 	
-	Vector<Coordinates> level1;
+	Vector<Coordinates> level;
 	private Portal bluePortal;
 	private Portal orangePortal;
 	private Rect sourceRect;
@@ -44,25 +43,25 @@ public class Map {
 		this.gameMode = gameMode;
 		
 		sourceRect = new Rect(0, 0, 20, 20);
-		level1 = new Vector<Coordinates>();
+		level = new Vector<Coordinates>();
 	}
 	
 	public Vector<Coordinates> getLevel(){
 		
-		return level1;
+		return level;
 	}
 	
-	public void generateLevel(int level){
-		if(level == 1) generateWalls();
-		if(level == 2) generateLevel2();
+	public void generateLevel(int levelNr){
+		if(levelNr == 1) generateWalls();
+		if(levelNr == 2) generateLevel2();
 		
 		int halfWidth;
 		int pWidth = width / 20;
 		int pHeight = height / 20;
 		halfWidth = pWidth/2;
-		Log.d("level1","siema generateLevel halfWidth : "+halfWidth);
+		
 		for(int i = 2; i<pHeight-1; i++){
-			if(i!=23 && i!=15) level1.add(new Coordinates((halfWidth-1)*20,20*i));
+			if(i!=23 && i!=15) level.add(new Coordinates((halfWidth-1)*20,20*i));
 		}
 
 		bluePortal = new Portal((halfWidth-1)*20, 23*20, Portal.WEST);
@@ -78,40 +77,35 @@ public class Map {
 		int halfHeight = pHeight/2;
 		
 		for(int i = 1; i<halfHeight; i++){
-			level1.add(new Coordinates(0,(halfHeight*20)+20*i));
-			//level1.add(new Coordinates((pWidth-1)*20,20*i));
+			level.add(new Coordinates(0,(halfHeight*20)+20*i));
 		}
 		for(int i = 0; i<halfWidth; i++){
-			//level1.add(new Coordinates((halfWidth*20)+20*i,40));
-			level1.add(new Coordinates(20*i, (pHeight-1)*20));
+			level.add(new Coordinates(20*i, (pHeight-1)*20));
 		}
 		for(int i = 0; i<pWidth; i++){
-			level1.add(new Coordinates(20*i,halfHeight*20));
+			level.add(new Coordinates(20*i,halfHeight*20));
 		}
 	}
 	
 	public void generateWalls(){
 		
 		int pWidth = width / 20;
-		Log.d("level1","siema generateLevel pWidth : "+pWidth);
 		int pHeight = height / 20;
-		Log.d("level1","siema generateLevel pHeight : "+pHeight);
+		
 		for(int i = 2; i<pHeight-1; i++){
-			level1.add(new Coordinates(0,20*i));
-			level1.add(new Coordinates((pWidth-1)*20,20*i));
+			level.add(new Coordinates(0,20*i));
+			level.add(new Coordinates((pWidth-1)*20,20*i));
 		}
 		for(int i = 0; i<pWidth; i++){
-			level1.add(new Coordinates(20*i,40));
-			level1.add(new Coordinates(20*i, (pHeight-1)*20));
+			level.add(new Coordinates(20*i,40));
+			level.add(new Coordinates(20*i, (pHeight-1)*20));
 		}
 	}
 	
 	public void showLevel(){
-		Log.d("level1","siema showLevel level1");
-		ListIterator<Coordinates> it = level1.listIterator();
+		ListIterator<Coordinates> it = level.listIterator();
 		while(it.hasNext()){
 			Coordinates c = it.next();
-			Log.d("level1","X: "+c.getXPos()+", Y: "+c.getYPos());
 		}
 	}
 	
@@ -121,7 +115,7 @@ public class Map {
 	 * @param canvas canvas na ktorym metoda rysuje snejka
 	 */
 	public void draw(Canvas canvas) {
-		ListIterator<Coordinates> it = level1.listIterator();
+		ListIterator<Coordinates> it = level.listIterator();
 		while(it.hasNext()){
 			Coordinates c = it.next();
 			Rect destRect = new Rect(c.getXPos(), c.getYPos(), c.getXPos() + 20, c.getYPos() + 20);

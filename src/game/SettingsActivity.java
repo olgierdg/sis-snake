@@ -17,7 +17,6 @@ import android.widget.CheckBox;
  */
 public class SettingsActivity extends Activity{
 
-	//public final static String VIBRATE_MSG = "game.Settings.VIBRATE_MSG";
 	private CheckBox checkBoxVibrate;
 	private CheckBox checkBoxSound;
 	private CheckBox checkBoxMusic;

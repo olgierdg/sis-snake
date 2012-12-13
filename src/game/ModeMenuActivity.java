@@ -5,7 +5,6 @@ import com.example.game.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -41,7 +40,6 @@ public class ModeMenuActivity extends Activity{
 		sound = intent.getStringExtra(MainMenu.SOUND_MSG);
 		music = intent.getStringExtra(MainMenu.MUSIC_MSG);
 		
-        Log.d(this.getLocalClassName(),"Siema mode menu, msg: "+vibrate);
         setContentView(R.layout.activity_mode_menu);
     }
 

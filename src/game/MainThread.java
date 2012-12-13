@@ -10,36 +10,14 @@ public class MainThread extends Thread {
 	private boolean running;
 	private Canvas canvas;
 	private boolean gameOver;
-	private String gameType;
-	private boolean drawMap;
 	
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
 		gameOver = false;
-		//drawMap = false;
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}
 
-	/*
-	private Object mPauseLock = new Object();  
-	private boolean mPaused;
-
-	public void onPause() {
-	    synchronized (mPauseLock) {
-	        mPaused = true;
-	    }
-	}
-
-	public void onResume() {
-	    synchronized (mPauseLock) {
-	        mPaused = false;
-	        this.setRunning(true);
-	        mPauseLock.notifyAll();
-	    }
-	}
-	*/
-	
 	@Override
 	public void run() {
 		while (running) {
@@ -73,10 +51,5 @@ public class MainThread extends Thread {
 	
 	public void setGameOver(boolean b){
 		gameOver = true;
-	}
-	
-	public void setGameType(String gameType){
-		this.gameType = gameType;
-		if(gameType.equals("portals")) drawMap = true;
 	}
 }

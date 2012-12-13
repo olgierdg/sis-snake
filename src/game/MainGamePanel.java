@@ -47,8 +47,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	//TOMEK
 	private Vector<OtherFruit> otherFruits; 
 	private Vector<Bitmap> otherFruitsBitmaps;
-	private long ticker;
-	private long ticker2;
+	private int ticker;
+	private int ticker2;
 	private int slower;
 	//TOMEK
 
@@ -130,11 +130,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				80, 80, gameMode, map);
 				
 		
-		this.ticker = 0l;		//TOMEK
-		this.ticker2 = System.currentTimeMillis() + 1000*(10 + generator.nextInt(6)) + level*1000;		//TOMEK
-		this.slower = 0;		//TOMEK
+		this.ticker = 40 + generator.nextInt(15);		//TOMEK
+		this.ticker2 = 0;								//TOMEK
+		this.slower = 0;								//TOMEK
 		thread = new MainThread(getHolder(), this);
-		
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -181,7 +180,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private void createApple() {
 		int i = getWidth()/20;
 		int j = getHeight()/20;
-		boolean iscollision = false;
+		//boolean iscollision = false;
 		
 		Apple apple = new Apple(Bitmap.createScaledBitmap(appleBitmap, 20, 20, true), 0, 0);
 		do{
@@ -198,7 +197,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}while(appleY % 20 != 0);
 			apple.setYPos(appleY);	
 			
-			//sprawdzana kolizja z wezem i scianami
+			/*//sprawdzana kolizja z wezem i scianami
 			if(ColisionDetector.isCollision(apple, map, snake)) iscollision = true;		
 			
 			//sprawdzana kolizja z innymi jablkami
@@ -213,9 +212,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				for(OtherFruit ofruit : otherFruits)
 					if(ColisionDetector.isCollision(apple, ofruit))		
 						iscollision = true;
-			}
+			}*/
 			
-		}while(iscollision);
+		}while(ColisionDetector.isCollision(apple, map, snake));
 		
 		apples.add(apple);		
 	}
@@ -230,7 +229,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int i = getWidth()/20;
 		int j = getHeight()/20;
 		int n = generator.nextInt(3);
-		boolean collision  = false;
+		boolean iscollision  = false;
 		
 		OtherFruit fruit = new OtherFruit(otherFruitsBitmaps.get(n), 0, 0, n+1);
 		do{
@@ -247,24 +246,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}while(fruitY % 20 != 0);
 			fruit.setYPos(fruitY);		
 			
-			//sprawdzana kolizja z wezem i scianami
-			if(ColisionDetector.isCollision(fruit, map, snake)) collision = true;		
+			/*//sprawdzana kolizja z wezem i scianami
+			if(ColisionDetector.isCollision(fruit, map, snake)) iscollision = true;		
 			
 			//sprawdzana kolizja z innymi jablkami
 			if(!apples.isEmpty()) {
 				for(Apple apple : apples)
 					if(ColisionDetector.isCollision(fruit, apple))						
-						collision = true;
+						iscollision = true;
 			}
 			
 			//sprawdzana kolizja z innymi owocami
 			if(!otherFruits.isEmpty()) {
 				for(OtherFruit ofruit : otherFruits)
 					if(ColisionDetector.isCollision(fruit, ofruit))						
-						collision = true;
-			}
+						iscollision = true;
+			}*/
 			
-		}while(collision);
+		}while(ColisionDetector.isCollision(fruit, map, snake));
 		
 		otherFruits.add(fruit);		
 	}
@@ -303,6 +302,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 * 
 	 * @param canvas
 	 */
+	
 	protected void render(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
 		if(gameMode.equals("portals") || gameMode.equals("walls")) map.draw(canvas);
@@ -322,7 +322,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		//TOMEK
 		if(!otherFruits.isEmpty())
-			for (OtherFruit obstacle : otherFruits) {
+			for(OtherFruit obstacle : otherFruits) {
 				obstacle.draw(canvas);
 			}
 		
@@ -348,7 +348,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		if(apples.isEmpty()) createApple();
 		
-		int sleepTime = 300 - level*50 + slower*300;
+		int sleepTime = 300 - level*50 + slower*100;
 		try {
 			MainThread.sleep(sleepTime);
 			//MainThread.sleep(1000);
@@ -359,6 +359,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(!gameOver) snake.updateSnake(System.currentTimeMillis());   //TOMEK
 		checkAndHandleCollisions();
 		this.calculateBonus();	//TOMEK
+		
 	}
 	
 	
@@ -368,28 +369,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 * Metoda przelicza rozne czasy zwiazane z bonusami
 	 */
 	private void calculateBonus() {
-		long gameTime = System.currentTimeMillis();
-		long time = 0l;
 		
 		if(otherFruits.isEmpty()) {
-			if(gameTime > this.ticker2) {
-				this.ticker = gameTime;
+			if(ticker == 0) {
+				this.ticker = 40;
 				this.createOtherFruit();
 			}
 		}
 		else {
-			time = this.ticker + 10000 - level*1000;
-			if(gameTime >  time) {
-				this.ticker2 = gameTime + 1000*(10 + generator.nextInt(6)) + level*1000;
+			if(ticker == 0) {
+				this.ticker = 45 + generator.nextInt(15);
 				this.removeOtherFruit();
 			}
 		}
 		
 		if(this.slower == 1) {
-			time = this.ticker + 15000l;
-			if(gameTime >  time)
+			if(ticker == ticker2)
 				this.slower = 0;	
 		}
+		ticker--;
 	}
 	
 	
@@ -461,8 +459,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 								 break;
 					}
 					
-					ticker = System.currentTimeMillis();
-					//ticker2 = System.currentTimeMillis() + 1000*(10 + generator.nextInt(6)) + level*1000;
+					ticker = 45 + generator.nextInt(15);
+					ticker2 = ticker - 40;;
 					if(vibrate) vibrator.vibrate(500);
 					otherFruits.remove(fruit);
 					//render(thread.getCanvas());
@@ -477,6 +475,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 			thread.setRunning(false);
 		}
+		
 	}
 
 	public MainThread getThread(){

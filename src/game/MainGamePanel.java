@@ -311,6 +311,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	protected void render(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
+		//canvas.drawColor(Color.rgb(0, 94, 0));
 		if(gameMode.equals("portals") || gameMode.equals("walls")) map.draw(canvas);
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);

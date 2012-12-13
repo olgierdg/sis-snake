@@ -18,15 +18,21 @@ import android.widget.CheckBox;
 public class SettingsActivity extends Activity{
 
 	//public final static String VIBRATE_MSG = "game.Settings.VIBRATE_MSG";
-	private CheckBox checkBox;
+	private CheckBox checkBoxVibrate;
+	private CheckBox checkBoxSound;
+	private CheckBox checkBoxMusic;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {		
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_settings);
-        checkBox = (CheckBox) findViewById(R.id.checkBox1);
-        checkBox.setChecked(true);
+        checkBoxVibrate = (CheckBox) findViewById(R.id.checkBoxVibrate);
+        checkBoxVibrate.setChecked(true);
+        checkBoxSound = (CheckBox) findViewById(R.id.checkBoxSound);
+        checkBoxSound.setChecked(true);
+        checkBoxMusic = (CheckBox) findViewById(R.id.checkBoxMusic);
+        checkBoxMusic.setChecked(true);
     }
 
     @Override
@@ -45,10 +51,20 @@ public class SettingsActivity extends Activity{
     	
     	Intent newIntent = new Intent();
     	
-    	if(checkBox.isChecked())
+    	if(checkBoxVibrate.isChecked())
     		newIntent.putExtra("Vibrate","yes");
     	else
     		newIntent.putExtra("Vibrate","no");
+    	
+    	if(checkBoxSound.isChecked())
+    		newIntent.putExtra("Sound","yes");
+    	else
+    		newIntent.putExtra("Sound","no");
+    	
+    	if(checkBoxMusic.isChecked())
+    		newIntent.putExtra("Music","yes");
+    	else
+    		newIntent.putExtra("Music","no");
     	
         setResult(RESULT_OK, newIntent);
         

@@ -62,6 +62,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private int downY;
 	private int score;
 	private int level;
+	private int levelMap;
 	private boolean gameOver;
 	
 	private Map map;
@@ -69,7 +70,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	//private Sensor mAccelerometer;
 
 	//public MainGamePanel(Context context, SensorManager sm, Display d, Vibrator vibrator) {
-	public MainGamePanel(Context context, String gameMode) {
+	public MainGamePanel(Context context, String gameMode, int level) {
 		super(context);
 		this.activity = (MainActivity) context;
 		getHolder().addCallback(this);
@@ -79,6 +80,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			
 		this.score = 0;
 		this.level = 1;
+		this.levelMap = level;
 		this.gameOver = false;
 		this.gameMode = gameMode;
 		this.otherFruits = new Vector<OtherFruit>();
@@ -153,7 +155,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			//map.showLevel();
 		}
 		if(gameMode.equals("portals")) {
-			map.generateLevel();
+			map.generateLevel(levelMap);
 			//map.showLevel();
 		}
 		

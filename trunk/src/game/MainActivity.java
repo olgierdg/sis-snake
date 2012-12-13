@@ -31,6 +31,9 @@ public class MainActivity extends Activity {
     private Vibrator vibrator;
     private MediaPlayer mpM;
     
+    private String sound;
+	private String music;
+    
     private static String ICICLE_KEY = "snake-view";
 	
 	@Override
@@ -40,6 +43,8 @@ public class MainActivity extends Activity {
 		Intent intent = getIntent();
 		String message = intent.getStringExtra("NEW_RESUME_MSG");
 		String vibrate = intent.getStringExtra("VIBRATE_MSG");
+		sound = intent.getStringExtra("SOUND_MSG");
+		music = intent.getStringExtra("MUSIC_MSG");
 		String gameMode  = intent.getStringExtra("GAME_TYPE_MSG");
 		
 		Log.d(this.getLocalClassName(),"Siema mainActivity onCreate, msg: "+vibrate);
@@ -54,7 +59,10 @@ public class MainActivity extends Activity {
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         
 	    //panel = new MainGamePanel(this, mSensorManager, mDisplay, vibrator);
-        panel = new MainGamePanel(this, gameMode);
+
+        int level = intent.getIntExtra("LEVEL_MSG", 1);
+        panel = new MainGamePanel(this, gameMode, level);
+
         panel.setVibrator(vibrator);
 		setContentView(panel);
 		
@@ -76,14 +84,14 @@ public class MainActivity extends Activity {
             	panel.restoreState(map);
             }
         }
-        playMusic(R.raw.music);
+        if(music.equalsIgnoreCase("musicOn")) playMusic(R.raw.music);
 	}
 	
 	@Override
     protected void onStop(){
 
 		super.onStop();
-		mpM.stop();
+		if(mpM != null) mpM.stop();
 
 		Log.d(this.getLocalClassName(), "Siema mainActivity onStop");
        
@@ -102,9 +110,10 @@ public class MainActivity extends Activity {
     }
 	
 	public void playSound(int soundID){      
-
-		MediaPlayer mp = MediaPlayer.create(this, soundID); 
-		mp.start();
+		if(sound.equalsIgnoreCase("soundOn")){
+			MediaPlayer mp = MediaPlayer.create(this, soundID); 
+			mp.start();
+		}
 	}
 	
 	public void playMusic(int soundID){      

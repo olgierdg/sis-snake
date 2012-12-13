@@ -52,9 +52,9 @@ public class Map {
 		return level1;
 	}
 	
-	public void generateLevel(){
-		//generateWalls();
-		generateLevel2();
+	public void generateLevel(int level){
+		if(level == 1) generateWalls();
+		if(level == 2) generateLevel2();
 		
 		int halfWidth;
 		int pWidth = width / 20;

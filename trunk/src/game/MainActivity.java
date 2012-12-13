@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
         panel.setVibrator(vibrator);
 		setContentView(panel);
 		
-		SharedPreferences settings = getPreferences(MODE_PRIVATE);
+		SharedPreferences settings = getSharedPreferences("SAVE", MODE_PRIVATE);
 
         if(vibrate.equalsIgnoreCase("vibrateOn"))
         	panel.setVibrate(true);
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
 
 		Log.d(this.getLocalClassName(), "Siema mainActivity onStop");
        
-		SharedPreferences settings = getPreferences(MODE_PRIVATE);
+		SharedPreferences settings = getSharedPreferences("SAVE", MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 
 		panel.saveState(editor);
@@ -121,5 +121,14 @@ public class MainActivity extends Activity {
 		mpM = MediaPlayer.create(this, soundID); 
 		mpM.start();
 		mpM.setLooping(true);
+	}
+	
+	public void gameOver(int score){
+		SharedPreferences settings = getSharedPreferences("SCORES", MODE_PRIVATE);
+		java.util.Map<String, ?> map = settings.getAll();
+		int count = map.size();
+		SharedPreferences.Editor editor = settings.edit();
+		panel.addScore(editor, count);
+		editor.commit();
 	}
 }

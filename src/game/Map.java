@@ -53,7 +53,8 @@ public class Map {
 	}
 	
 	public void generateLevel(){
-		generateWalls();
+		//generateWalls();
+		generateLevel2();
 		
 		int halfWidth;
 		int pWidth = width / 20;
@@ -61,11 +62,32 @@ public class Map {
 		halfWidth = pWidth/2;
 		Log.d("level1","siema generateLevel halfWidth : "+halfWidth);
 		for(int i = 2; i<pHeight-1; i++){
-			if(i!=11 && i!=18) level1.add(new Coordinates((halfWidth-1)*20,20*i));
+			if(i!=23 && i!=15) level1.add(new Coordinates((halfWidth-1)*20,20*i));
 		}
 
-		bluePortal = new Portal((halfWidth-1)*20, 11*20, Portal.WEST);
-		orangePortal  = new Portal((halfWidth-1)*20, 18*20, Portal.EAST);
+		bluePortal = new Portal((halfWidth-1)*20, 23*20, Portal.WEST);
+		orangePortal  = new Portal((halfWidth-1)*20, 15*20, Portal.EAST);
+	}
+	
+	private void generateLevel2(){
+		int pWidth = width / 20;
+
+		int pHeight = height / 20;
+
+		int halfWidth = pWidth/2;
+		int halfHeight = pHeight/2;
+		
+		for(int i = 1; i<halfHeight; i++){
+			level1.add(new Coordinates(0,(halfHeight*20)+20*i));
+			//level1.add(new Coordinates((pWidth-1)*20,20*i));
+		}
+		for(int i = 0; i<halfWidth; i++){
+			//level1.add(new Coordinates((halfWidth*20)+20*i,40));
+			level1.add(new Coordinates(20*i, (pHeight-1)*20));
+		}
+		for(int i = 0; i<pWidth; i++){
+			level1.add(new Coordinates(20*i,halfHeight*20));
+		}
 	}
 	
 	public void generateWalls(){

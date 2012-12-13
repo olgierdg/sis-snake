@@ -4,6 +4,7 @@ import com.example.game.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -71,17 +72,21 @@ public class MainMenu extends Activity{
 	 */
 	public void resume(View view){
 		
-		Intent intent = new Intent(this, ModeMenuActivity.class);
-		intent.putExtra(NEW_RESUME_MSG, "resumeGame");
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("NEW_RESUME_MSG", "resumeGame");
 		
-		if(vibrate) intent.putExtra(VIBRATE_MSG, "vibrateOn");
-		else intent.putExtra(VIBRATE_MSG, "vibrateOff");
+		if(vibrate) intent.putExtra("VIBRATE_MSG", "vibrateOn");
+		else intent.putExtra("VIBRATE_MSG", "vibrateOff");
 		
-		if(sound) intent.putExtra(SOUND_MSG, "soundOn");
-		else intent.putExtra(SOUND_MSG, "soundOff");
+		if(sound) intent.putExtra("SOUND_MSG", "soundOn");
+		else intent.putExtra("SOUND_MSG", "soundOff");
 		
-		if(music) intent.putExtra(MUSIC_MSG, "musicOn");
-		else intent.putExtra(MUSIC_MSG, "musicOff");
+		if(music) intent.putExtra("MUSIC_MSG", "musicOn");
+		else intent.putExtra("MUSIC_MSG", "musicOff");
+		
+		SharedPreferences settings = getPreferences(MODE_PRIVATE);
+		String gameMode = settings.getString("gameMode", "normal");
+		intent.putExtra("GAME_TYPE_MSG", gameMode);
 		
 	    startActivity(intent);
 	}

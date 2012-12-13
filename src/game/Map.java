@@ -169,5 +169,7 @@ public class Map {
 		this.orangePortal = orangePortal;
 	}
 	
-
+	public void setGameMode(String gameMode){
+		this.gameMode = gameMode;
+	}
 }

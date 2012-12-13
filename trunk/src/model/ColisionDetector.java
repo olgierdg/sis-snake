@@ -36,7 +36,12 @@ public final class ColisionDetector {
 	 */
 	public static boolean isCollision(Snake snake) {
 		SnakePiece head = snake.getHead();
-		int dir = snake.getDir();
+		for(int i = 1; i<snake.snakeBody.size(); i++){
+			SnakePiece s = snake.snakeBody.get(i);
+			if((head.getXPos() == s.getXPos()) && (head.getYPos() == s.getYPos())) return true;
+		}
+			
+		/*int dir = snake.getDir();
 		for(int i = 1; i<snake.snakeBody.size(); i++){
 			SnakePiece s = snake.snakeBody.get(i);
 			if(dir == Snake.NORTH)
@@ -47,7 +52,7 @@ public final class ColisionDetector {
 				if((head.getXPos() == s.getXPos()-20) && (head.getYPos() == s.getYPos())) return true;
 			if(dir == Snake.WEST)
 				if((head.getXPos() == s.getXPos()+20) && (head.getYPos() == s.getYPos())) return true;
-		}
+		}*/
 		return false;
 	}
 	

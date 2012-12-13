@@ -476,9 +476,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		}
 		//TOMEK
 		
-		if (ColisionDetector.isCollision(snake)) {
+		if (ColisionDetector.isCollision(snake)) {		
 			this.gameOver = true;
 			vibrator.vibrate(500);		
+			thread.setGameOver(true);
 			Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 			thread.setRunning(false);
 		}

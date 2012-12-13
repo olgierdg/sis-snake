@@ -439,7 +439,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(vibrate) vibrator.vibrate(500);
 				apples.remove(apple);
 				snake.setGrowSnake(true);
-				render(thread.getCanvas());
+				//render(thread.getCanvas());
 			}
 		}
 		
@@ -462,9 +462,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 					}
 					
 					ticker = System.currentTimeMillis();
+					//ticker2 = System.currentTimeMillis() + 1000*(10 + generator.nextInt(6)) + level*1000;
 					if(vibrate) vibrator.vibrate(500);
 					otherFruits.remove(fruit);
-					render(thread.getCanvas());
+					//render(thread.getCanvas());
 				}
 			}
 		}

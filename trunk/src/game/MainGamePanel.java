@@ -536,6 +536,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		editor.putBoolean("gameOver", gameOver);	
 		editor.putInt("Score", score);
 		editor.putInt("Level", level);
+		editor.putInt("MapLevel", levelMap);
+		editor.putString("gameMode", gameMode);
     }
 	
 	/**
@@ -568,6 +570,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		bundle.putBoolean("gameOver", gameOver);	
 		bundle.putInt("Score", score);
 		bundle.putInt("Level", level);
+		bundle.putInt("MapLevel", levelMap);
+		bundle.putString("gameMode", gameMode);
 		
 		return bundle;
     }
@@ -600,7 +604,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.score = settings.getInt("Score", 0);
 		this.level = settings.getInt("Level", 1);
 		this.gameOver = settings.getBoolean("gameOver", false);
-
+		this.levelMap = settings.getInt("MapLevel", 1);
+		this.gameMode = settings.getString("gameMode","normal");
+		map.setGameMode(gameMode);
 		if(gameOver) this.thread.setGameOver(true);
 
     }
@@ -634,6 +640,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		this.score = bundle.getInt("Score", 0);
 		this.level = bundle.getInt("Level", 1);
 		this.gameOver = bundle.getBoolean("gameOver", false);
+		this.levelMap = bundle.getInt("MapLevel", 1);
+		this.gameMode = bundle.getString("gameMode");
 
 		if(gameOver) this.thread.setGameOver(true);
 

@@ -20,7 +20,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -158,7 +157,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			map.generateLevel(levelMap);
 			//map.showLevel();
 		}
-		
+		if(!apples.isEmpty()){
+			apples.remove(0);
+			this.createApple();
+		}
 		thread.setGameType(gameMode);
 		//if(apples.isEmpty()) createApple();
 		

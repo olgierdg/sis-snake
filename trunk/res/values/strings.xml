@@ -23,5 +23,7 @@
     <string name="sound">Sound</string>
     <string name="music">Music</string>
     <string name="level_2">Level 2</string>
+    <string name="best_scores">Best Scores</string>
+    <string name="the_best_scores">The best scores</string>
 
 </resources>

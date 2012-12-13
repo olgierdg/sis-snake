@@ -406,7 +406,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(gameMode.equals("walls") || gameMode.equals("portals")){
 			if (ColisionDetector.isCollisionWalls(snake, map, gameMode)) {
 				this.gameOver = true;
-				vibrator.vibrate(500);		
+				vibrator.vibrate(500);	
+				activity.gameOver(score);
 				thread.setGameOver(true);
 				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 				thread.setRunning(false);
@@ -478,7 +479,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		if (ColisionDetector.isCollision(snake)) {		
 			this.gameOver = true;
-			vibrator.vibrate(500);		
+			vibrator.vibrate(500);	
+			activity.gameOver(score);
 			thread.setGameOver(true);
 			Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 			thread.setRunning(false);
@@ -667,4 +669,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(score >= level*100) level++;
 	}
 	
+	public void addScore(SharedPreferences.Editor editor, int count){
+		editor.putInt("Score"+count, score);
+	}
 }

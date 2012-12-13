@@ -22,7 +22,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -140,7 +139,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		// TODO Auto-generated method stub
 	}
 
 	public void surfaceCreated(SurfaceHolder holder) {
@@ -161,7 +159,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			apples.remove(0);
 			this.createApple();
 		}
-		thread.setGameType(gameMode);
+		//thread.setGameType(gameMode);
 		//if(apples.isEmpty()) createApple();
 		
 		thread.setRunning(true);
@@ -235,7 +233,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int i = getWidth()/20;
 		int j = getHeight()/20;
 		int n = generator.nextInt(3);
-		boolean iscollision  = false;
 		
 		OtherFruit fruit = new OtherFruit(otherFruitsBitmaps.get(n), 0, 0, n+1);
 		do{
@@ -410,7 +407,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				vibrator.vibrate(500);	
 				activity.gameOver(score);
 				thread.setGameOver(true);
-				Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 				thread.setRunning(false);
 			}
 		}
@@ -483,7 +479,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			vibrator.vibrate(500);	
 			activity.gameOver(score);
 			thread.setGameOver(true);
-			Log.d("game.MainGamePanel", "Siema gameover " +gameOver);
 			thread.setRunning(false);
 		}
 		
@@ -492,21 +487,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public MainThread getThread(){
 		return this.thread;
 	}
-
-	/*
-	public void onAccuracyChanged(Sensor arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onSensorChanged(SensorEvent event) {
-		// TODO Auto-generated method stub
-		//float azimuth_angle = event.values[0];
-	    float pitch_angle = event.values[0];
-	    float roll_angle = event.values[1];
-	    //spaceship.handleActionMove(pitch_angle, roll_angle, getWidth(), getHeight());
-	}
-	*/
 	
 	/**
 	 * Metoda zapisuje stan gry uzywajac do tego Shared Preferences.
@@ -515,8 +495,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 */
 	public void saveState(SharedPreferences.Editor editor) {
 
-		Log.d("game.MainGamePanel", "Siema gejm sejw "+gameOver);
-        
+       
         //zapis weza      
         editor.putInt("direction", snake.getDir());
         editor.putInt("nextDirection", snake.getNextDir());
@@ -524,11 +503,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
         editor.putInt("snakeBodySize", snake.getSnakeBody().size());
 
         for(int i = 0; i<snake.getSnakeBody().size(); i++){
-        	editor.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());
-        	//Log.d("game.Snake", "snakeBodyPiece"+i+"X"+snake.getSnakeBody().get(i).getXPos());
-        	
+        	editor.putInt("snakeBodyPiece"+i+"X", snake.getSnakeBody().get(i).getXPos());       	
         	editor.putInt("snakeBodyPiece"+i+"Y", snake.getSnakeBody().get(i).getYPos());
-        	//Log.d("game.Snake", "snakeBodyPiece"+i+"Y"+snake.getSnakeBody().get(i).getYPos());
         }
         
         //zapis jablka
@@ -550,8 +526,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	 * @param editor
 	 */
 	public Bundle saveState() {
-
-		Log.d("game.MainGamePanel", "Siema gejm sejw orientejszyn");
 		
 		Bundle bundle = new Bundle();
         //zapis weza      

@@ -30,7 +30,6 @@ public class MainMenu extends Activity{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         
-        //Log.d(this.getLocalClassName(), "Siema main menu");
         vibrate = true;
         sound = true;
         music = true;

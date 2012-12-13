@@ -21,23 +21,17 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
-		// TODO Auto-generated constructor stub
 		thread = new ScoresThread(getHolder(), this);
 	}
 
-	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-		
+	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {		
 	}
 
 	public void surfaceCreated(SurfaceHolder arg0) {
-		// TODO Auto-generated method stub
         thread.start();
 	}
 
 	public void surfaceDestroyed(SurfaceHolder arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void setPrefs(SharedPreferences settings){
@@ -45,6 +39,7 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 	}
 	
 	public void render(Canvas canvas){
+		@SuppressWarnings("unchecked")
 		java.util.Map<String, Integer> map = (Map<String, Integer>) settings.getAll();
 		int count = map.size();
 		SortedSet<Integer> vals = new TreeSet<Integer>(map.values());
@@ -59,12 +54,7 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 		canvas.drawText("Highscores: ", 30, 25, paint);
 		
 		int i = 0;
-		//vals.
-		//for (Integer val : vals) { 
-		//	i++;
-		//	canvas.drawText(i+" : "+val, 30, 25+25*i, paint);
-		   // do something
-		//}
+
 		while(i < count){
 			if(arr[count-1-i] != null) canvas.drawText(i+" : "+arr[count-1-i], 30, 25+25*i, paint);
 			i++;

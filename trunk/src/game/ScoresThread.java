@@ -14,20 +14,16 @@ public class ScoresThread extends Thread {
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 	}
-
 	
 	@Override
 	public void run() {
-
-			canvas = null;
-				canvas = this.surfaceHolder.lockCanvas();
-				synchronized (surfaceHolder) {
-					if(canvas != null){
-						gamePanel.render(canvas);
-					}
-				}
-				surfaceHolder.unlockCanvasAndPost(canvas);
-		
+		canvas = null;
+		canvas = this.surfaceHolder.lockCanvas();
+		synchronized (surfaceHolder) {
+			if(canvas != null){
+				gamePanel.render(canvas);
+			}
+		}
+		surfaceHolder.unlockCanvasAndPost(canvas);		
 	}
-
 }

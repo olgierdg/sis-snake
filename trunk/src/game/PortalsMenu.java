@@ -5,7 +5,6 @@ import com.example.game.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -38,8 +37,7 @@ public class PortalsMenu extends Activity{
 		sound = intent.getStringExtra(ModeMenuActivity.SOUND_MSG);
 		music = intent.getStringExtra(ModeMenuActivity.MUSIC_MSG);
 		gameType = intent.getStringExtra(ModeMenuActivity.GAME_TYPE_MSG);
-		
-        Log.d(this.getLocalClassName(),"Siema portals menu, msg: "+vibrate);
+
         setContentView(R.layout.activity_portals_menu);
     }
 

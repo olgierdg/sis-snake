@@ -54,11 +54,14 @@ public class HighScoresPanel extends SurfaceView implements SurfaceHolder.Callba
 		canvas.drawText("Highscores: ", 30, 25, paint);
 		
 		int i = 0;
-
+		int showC = 1;
 		while(i < count){
-			if(arr[count-1-i] != null) canvas.drawText(i+" : "+arr[count-1-i], 30, 25+25*i, paint);
+			if(arr[count-1-i] != null){ 
+				canvas.drawText(showC+" : "+arr[count-1-i], 30, 25+25*showC, paint);
+				showC++;
+			}
 			i++;
-			if(i == 11) break;
+			if(showC == 11) break;
 		}
 	}
 }

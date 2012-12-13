@@ -23,6 +23,8 @@ public class PortalsMenu extends Activity{
 	
 	private String message;
 	private String vibrate;
+	private String sound;
+	private String music;
 	private String gameType;
 	
 	@Override
@@ -33,6 +35,8 @@ public class PortalsMenu extends Activity{
         Intent intent = getIntent();
 		message = intent.getStringExtra(ModeMenuActivity.NEW_RESUME_MSG);
 		vibrate = intent.getStringExtra(ModeMenuActivity.VIBRATE_MSG);
+		sound = intent.getStringExtra(ModeMenuActivity.SOUND_MSG);
+		music = intent.getStringExtra(ModeMenuActivity.MUSIC_MSG);
 		gameType = intent.getStringExtra(ModeMenuActivity.GAME_TYPE_MSG);
 		
         Log.d(this.getLocalClassName(),"Siema portals menu, msg: "+vibrate);
@@ -51,8 +55,22 @@ public class PortalsMenu extends Activity{
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.putExtra("NEW_RESUME_MSG", message);
 		intent.putExtra("VIBRATE_MSG", vibrate);
+		intent.putExtra("SOUND_MSG", sound);
+		intent.putExtra("MUSIC_MSG", music);
 		intent.putExtra("GAME_TYPE_MSG", gameType);
 		intent.putExtra("LEVEL_MSG", 1);
+	    startActivity(intent);
+	}
+	
+public void newPortalsGameLevel2(View view){
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtra("NEW_RESUME_MSG", message);
+		intent.putExtra("VIBRATE_MSG", vibrate);
+		intent.putExtra("SOUND_MSG", sound);
+		intent.putExtra("MUSIC_MSG", music);
+		intent.putExtra("GAME_TYPE_MSG", gameType);
+		intent.putExtra("LEVEL_MSG", 2);
 	    startActivity(intent);
 	}
 }

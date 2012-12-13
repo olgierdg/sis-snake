@@ -20,5 +20,8 @@
     <string name="level_1">Level 1</string>
     <string name="title_portals_menu">Portals Menu</string>
     <string name="walls">Walls</string>
+    <string name="sound">Sound</string>
+    <string name="music">Music</string>
+    <string name="level_2">Level 2</string>
 
 </resources>

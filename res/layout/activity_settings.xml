@@ -4,23 +4,38 @@
     android:layout_height="match_parent"
     android:background="@drawable/cartton_snake" >
 
+    <CheckBox
+        android:id="@+id/checkBoxSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBoxMusic"
+        android:layout_marginLeft="23dp"
+        android:layout_toRightOf="@+id/button1"
+        android:text="@string/sound" />
+
+    <CheckBox
+        android:id="@+id/checkBoxVibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBoxSound"
+        android:layout_alignLeft="@+id/checkBoxSound"
+        android:text="@string/settings_vibrate" />
+
+    <CheckBox
+        android:id="@+id/checkBoxMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxSound"
+        android:layout_centerVertical="true"
+        android:text="@string/music" />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxMusic"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:onClick="ok"
         android:text="@string/ok" />
-
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_marginBottom="34dp"
-        android:layout_marginLeft="34dp"
-        android:text="@string/settings_vibrate" />
 
 </RelativeLayout>

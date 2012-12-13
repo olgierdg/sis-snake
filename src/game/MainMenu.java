@@ -18,8 +18,12 @@ public class MainMenu extends Activity{
 
 	public final static String NEW_RESUME_MSG = "game.MainMenu.NEW_RESUME_MSG";
 	public final static String VIBRATE_MSG = "game.MainMenu.VIBRATE_MSG";
+	public final static String SOUND_MSG = "game.MainMenu.SOUND_MSG";
+	public final static String MUSIC_MSG = "game.MainMenu.MUSIC_MSG";
 	
 	private boolean vibrate;
+	private boolean sound;
+	private boolean music;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState){
@@ -27,6 +31,8 @@ public class MainMenu extends Activity{
         
         //Log.d(this.getLocalClassName(), "Siema main menu");
         vibrate = true;
+        sound = true;
+        music = true;
         setContentView(R.layout.activity_main_menu);
     }
 
@@ -48,6 +54,12 @@ public class MainMenu extends Activity{
 		
 		if(vibrate) intent.putExtra(VIBRATE_MSG, "vibrateOn");
 		else intent.putExtra(VIBRATE_MSG, "vibrateOff");
+		
+		if(sound) intent.putExtra(SOUND_MSG, "soundOn");
+		else intent.putExtra(SOUND_MSG, "soundOff");
+		
+		if(music) intent.putExtra(MUSIC_MSG, "musicOn");
+		else intent.putExtra(MUSIC_MSG, "musicOff");
 		
 	    startActivity(intent);
 	}
@@ -87,6 +99,18 @@ public class MainMenu extends Activity{
 	            	vibrate = true;
 	            if(vibrateOption.equalsIgnoreCase("no"))
 	            	vibrate = false;
+	            
+	            String soundOption = data.getStringExtra("Sound");
+	            if(soundOption.equalsIgnoreCase("yes"))
+	            	sound = true;
+	            if(soundOption.equalsIgnoreCase("no"))
+	            	sound = false;
+	            
+	            String musicOption = data.getStringExtra("Music");
+	            if(musicOption.equalsIgnoreCase("yes"))
+	            	music = true;
+	            if(musicOption.equalsIgnoreCase("no"))
+	            	music = false;
 	            break;
 	         }
 	      }

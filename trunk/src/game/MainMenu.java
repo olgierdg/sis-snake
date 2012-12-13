@@ -77,6 +77,12 @@ public class MainMenu extends Activity{
 		if(vibrate) intent.putExtra(VIBRATE_MSG, "vibrateOn");
 		else intent.putExtra(VIBRATE_MSG, "vibrateOff");
 		
+		if(sound) intent.putExtra(SOUND_MSG, "soundOn");
+		else intent.putExtra(SOUND_MSG, "soundOff");
+		
+		if(music) intent.putExtra(MUSIC_MSG, "musicOn");
+		else intent.putExtra(MUSIC_MSG, "musicOff");
+		
 	    startActivity(intent);
 	}
 	

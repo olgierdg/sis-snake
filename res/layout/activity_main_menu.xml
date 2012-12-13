@@ -5,23 +5,13 @@
     android:background="@drawable/cartton_snake" >
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/button3"
-        android:layout_marginTop="112dp"
-        android:onClick="newGame"
-        android:text="@string/new_game" />
-
-    <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button4"
+        android:layout_alignLeft="@+id/button1"
         android:layout_alignRight="@+id/button4"
         android:layout_below="@+id/button1"
+        android:layout_marginTop="28dp"
         android:onClick="resume"
         android:text="@string/resume" />
 
@@ -31,16 +21,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button3"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
         android:onClick="bestScores"
         android:text="@string/best_scores" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button4"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="109dp"
+        android:onClick="newGame"
+        android:text="@string/new_game" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button3"
+        android:layout_alignLeft="@+id/button4"
         android:layout_alignRight="@+id/button4"
         android:layout_below="@+id/button4"
+        android:layout_marginTop="18dp"
         android:onClick="settings"
         android:text="@string/settings" />
 

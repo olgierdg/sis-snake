@@ -92,6 +92,19 @@ public class MainMenu extends Activity{
 	}
 	
 	/**
+	 * TOMEK
+	 * 
+	 * Przycisk best scores.
+	 * 
+	 * @param view
+	 */
+	public void bestScores(View view){
+		Intent intent = new Intent(this, BestScores.class);
+	    startActivity(intent);
+	}
+	
+	
+	/**
 	 * Ustawienia
 	 * 
 	 * @param view

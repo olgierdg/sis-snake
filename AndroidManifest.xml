@@ -27,6 +27,7 @@
         <activity android:name="game.ModeMenuActivity" android:label="@string/title_activity_mode_menu"></activity>
         <activity android:label="@string/settings" android:name="game.SettingsActivity"></activity>
         <activity android:label="@string/title_portals_menu" android:name="game.PortalsMenu"></activity>
+        <activity android:label="@string/best_scores" android:name="game.BestScores"></activity>
     </application>
 
 </manifest>

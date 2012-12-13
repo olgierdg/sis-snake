@@ -1,8 +1,12 @@
 package game;
 
+import com.example.game.R;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -25,6 +29,7 @@ public class MainActivity extends Activity {
     //private WindowManager mWindowManager;
     //private Display mDisplay;
     private Vibrator vibrator;
+    private MediaPlayer mpM;
     
     private static String ICICLE_KEY = "snake-view";
 	
@@ -61,6 +66,7 @@ public class MainActivity extends Activity {
         	panel.setVibrate(false);
         
         if (savedInstanceState == null) {
+        	
         	if(message.equalsIgnoreCase("resumeGame"))
     			panel.restoreState(settings);
         }else{
@@ -70,12 +76,14 @@ public class MainActivity extends Activity {
             	panel.restoreState(map);
             }
         }
+        playMusic(R.raw.music);
 	}
 	
 	@Override
     protected void onStop(){
 
 		super.onStop();
+		mpM.stop();
 
 		Log.d(this.getLocalClassName(), "Siema mainActivity onStop");
        
@@ -92,4 +100,17 @@ public class MainActivity extends Activity {
         //Store the game state
         outState.putBundle(ICICLE_KEY, panel.saveState());
     }
+	
+	public void playSound(int soundID){      
+
+		MediaPlayer mp = MediaPlayer.create(this, soundID); 
+		mp.start();
+	}
+	
+	public void playMusic(int soundID){      
+
+		mpM = MediaPlayer.create(this, soundID); 
+		mpM.start();
+		mpM.setLooping(true);
+	}
 }

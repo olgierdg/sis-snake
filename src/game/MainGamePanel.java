@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
@@ -64,12 +65,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private boolean gameOver;
 	
 	private Map map;
+	private MainActivity activity;
 	//private Sensor mAccelerometer;
 
 	//public MainGamePanel(Context context, SensorManager sm, Display d, Vibrator vibrator) {
 	public MainGamePanel(Context context, String gameMode) {
 		super(context);
-		
+		this.activity = (MainActivity) context;
 		getHolder().addCallback(this);
 		setFocusable(true);
 		//mAccelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -433,6 +435,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		for(Apple apple : apples) {
 			if (ColisionDetector.isCollision(snake, apple)) {
+				activity.playSound(R.raw.apple_bite);
 				this.incrementScore(1);
 				if(vibrate) vibrator.vibrate(500);
 				apples.remove(apple);
@@ -631,6 +634,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(gameOver) this.thread.setGameOver(true);
 
     }
+	
+	
 	
 	public void setVibrate(boolean vibrate){
 		this.vibrate = vibrate;

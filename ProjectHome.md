@@ -1,0 +1,1 @@
+Implementacja gry Snake na platformę Android w ramach projektu z przedmiotu SiS
